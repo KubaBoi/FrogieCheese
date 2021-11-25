@@ -4,6 +4,7 @@
 from http.server import BaseHTTPRequestHandler
 
 from cheese.modules.cheeseController import CheeseController
+from python.authorization import Authorization
 
 #REST CONTROLLERS
 

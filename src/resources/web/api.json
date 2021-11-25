@@ -1,0 +1,572 @@
+{
+    "/authentication": {
+        "/login": {
+            "type": "POST",
+            "body": {
+                "USER_NAME": "String",
+                "PASSWORDS": "String"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "USER": {
+                            "USER_ID": "long",
+                            "USER_NAME": "String",
+                            "EMAIL": "String",
+                            "PICTURE_ID": "long"
+                        },
+                        "TOKEN": "String"
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Old password"
+                    },
+                    "description": "Password need to be renewd."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Wrong credentials"
+                    },
+                    "description": "User with those credential was not found."
+                }
+            ]
+        },
+        "getUserByToken": {
+            "type": "POST",
+            "body": {
+                "TOKEN": "String"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "USER_ID": "long",
+                        "USER_NAME": "String",
+                        "EMAIL": "String",
+                        "PICTURE_ID": "long"
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token and ip does not match."
+                }
+            ]
+        }
+    },
+
+    "/chats": {
+        "/createChat": {
+            "type": "POST",
+            "description": "Creates and returns new CHAT with USER_ID user. Works as making friends.",
+            "body": {
+                "TOKEN": "String",
+                "CHAT_USERS": [
+                    "long"
+                ]
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "CHAT_ID": "long",
+                        "LAST_ACTIVITY": "long",
+                        "CHAT_NAME": "String",
+                        "PICTURE_ID": "long",
+                        "CHAT_USERS": [
+                            {
+                                "USER_ID": "long",
+                                "USER_NAME": "String",
+                                "EMAIL": "String",
+                                "PICTURE_ID": "long"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                },
+                {
+                    "code": 409,
+                    "body": {
+                        "ERROR": "Chat already exists"
+                    },
+                    "description": "Cannot create a new CHAT because there already is one between USER_ID and WANTED_USER_ID."
+                },
+                {
+                    "code": 404,
+                    "body": {
+                        "ERROR": "User does not exist"
+                    },
+                    "description": "WANTED_USER_ID is not in database."
+                }
+            ]
+        },
+        "/getChats": {
+            "type": "POST",
+            "description": "Returns array of max 20 CHATS from time FROM_TIME, sorted from newest. If FROM_TIME is 0, returns from actual time.",
+            "body": {
+                "TOKEN": "String",
+                "FROM_TIME": "long"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "CHATS": [
+                            {
+                                "CHAT_ID": "long",
+                                "LAST_ACTIVITY": "long",
+                                "CHAT_NAME": "String",
+                                "PICTURE_ID": "long",
+                                "CHAT_USERS": [
+                                    {
+                                        "USER_ID": "long",
+                                        "USER_NAME": "String",
+                                        "EMAIL": "String",
+                                        "PICTURE_ID": "long"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                }
+            ]
+        },
+        "/getChatsById": {
+            "type": "POST",
+            "description": "Returns array of max 20 CHATS by CHAT_IDS.",
+            "body": {
+                "TOKEN": "String",
+                "CHAT_IDS": [
+                    "long"
+                ]
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "CHATS": [
+                            {
+                                "CHAT_ID": "long",
+                                "LAST_ACTIVITY": "long",
+                                "CHAT_NAME": "String",
+                                "PICTURE_ID": "long",
+                                "CHAT_USERS": [
+                                    {
+                                        "USER_ID": "long",
+                                        "USER_NAME": "String",
+                                        "EMAIL": "String",
+                                        "PICTURE_ID": "long"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                }
+            ]
+        }
+    },
+
+    "/messages": {
+        "/getChatMessages": {
+            "type": "POST",
+            "description": "Returns array of max 20 MESSAGES from time FROM_TIME, sorted from newest. If FROM_TIME is 0, returns from actual time.",
+            "body": {
+                "TOKEN": "String",
+                "FROM_TIME": "long",
+                "CHATS": [
+                    "long"
+                ]
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "CHATS": [
+                            {
+                                "CHAT_ID": "long",
+                                "MESSAGES": [
+                                    {
+                                        "MESSAGE_ID": "long",
+                                        "CHAT_ID": "long",
+                                        "AUTHOR_ID": "long",
+                                        "CONTENT": "String",
+                                        "TIME_STAMP": "long"
+                                    }
+                                ],
+                                "LAST_DELIVERED_MESSAGE_ID": "long",
+                                "LAST_SEEN_MESSAGE_ID": "long"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Access denied"
+                    },
+                    "description": "Requested CHAT does not belong to logged USER."
+                }
+            ]
+        },
+        "/sendMessage": {
+            "type": "POST",
+            "description": "Accepts and saves MESSAGE.",
+            "body": {
+                "TOKEN": "String",
+                "CHAT_ID": "long",
+                "CONTENT": "String"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "MESSAGE_ID": "long",
+                        "CHAT_ID": "long",
+                        "AUTHOR_ID": "long",
+                        "CONTENT": "String",
+                        "TIME_STAMP": "long",
+                        "DELIVERED": "bool",
+                        "SEEN": "bool"
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Access denied"
+                    },
+                    "description": "Requested CHAT does not belong to logged USER."
+                }
+            ]
+        },
+        "/seenMessage": {
+            "type": "POST",
+            "description": "Set SEEN of all MESSAGES older and equal then MESSAGE with MESSAGE_ID as true",
+            "body": {
+                "TOKEN": "String",
+                "MESSAGE_ID": "long"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "MESSAGE_ID": "long",
+                        "CHAT_ID": "long",
+                        "AUTHOR_ID": "long",
+                        "CONTENT": "String",
+                        "TIME_STAMP": "long",
+                        "DELIVERED": "bool",
+                        "SEEN": "bool"
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Access denied"
+                    },
+                    "description": "CHAT which contains requested MESSAGE does not belong to logged USER."
+                },
+                {
+                    "code": 404,
+                    "body": {
+                        "ERROR": "Message not found"
+                    },
+                    "description": "Requested MESSAGE is not in database."
+                },
+                {
+                    "code": 418,
+                    "body": {
+                        "ERROR": "Message is older than last seen, nothing is happening :)"
+                    }
+                }
+            ]
+        }
+    },
+    "/users": {
+        "/createUser": {
+            "type": "POST",
+            "description": "Registers new USER.",
+            "body": {
+                "USER_NAME": "String",
+                "PASSWORD": "String",
+                "EMAIL": "String"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "USER_ID": "long",
+                        "USER_NAME": "String",
+                        "EMAIL": "String",
+                        "PICTURE_ID": "long"
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 409,
+                    "body": {
+                        "ERROR": "Name is already taken"
+                    },
+                    "description": "USER with this USER_NAME is already registered in database."
+                }
+            ]
+        },
+        "/getUser": {
+            "type": "POST",
+            "description": "Returns USER with USER_ID.",
+            "body": {
+                "TOKEN": "String",
+                "USER_ID": "long"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "USER_ID": "long",
+                        "USER_NAME": "String",
+                        "EMAIL": "String",
+                        "PICTURE_ID": "long"
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                },
+                {
+                    "code": 404,
+                    "body": {
+                        "ERROR": "Unknown user"
+                    },
+                    "description": "User withUSER_ID is not in database."
+                }
+            ]
+        },
+        "/getUserByName": {
+            "type": "POST",
+            "description": "Returns USER with USER_NAME.",
+            "body": {
+                "TOKEN": "String",
+                "USER_NAME": "String"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "USER_ID": "long",
+                        "USER_NAME": "String",
+                        "EMAIL": "String",
+                        "PICTURE_ID": "long"
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                },
+                {
+                    "code": 404,
+                    "body": {
+                        "ERROR": "Unknown user"
+                    },
+                    "description": "User with WANTED_USER_NAME is not in database."
+                }
+            ]
+        },
+        "/update": {
+            "type": "POST",
+            "description": "Updates TOKEN time and returns array of all CHAT_IDs with MESSAGEs which has DELIVERED false. It is recommended to call this endpoint with minimal delay 1 second.",
+            "body": {
+                "TOKEN": "String"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": {
+                        "CHANGES": [
+                            "long"
+                        ]
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                }
+            ]
+        },
+        "/getUserDynamic": {
+            "type": "POST",
+            "description": "Returns USERs with USER_NAME starting with USER_NAME_START.",
+            "body": {
+                "TOKEN": "String",
+                "USER_NAME_START": "String"
+            },
+            "responses": [
+                {
+                    "code": 200,
+                    "body": 
+                    {
+                        "USERS": [
+                            {
+                                "USER_ID": "long",
+                                "USER_NAME": "String",
+                                "EMAIL": "String",
+                                "PICTURE_ID": "long"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "code": 400,
+                    "body": {
+                        "ERROR": "Wrong json structure"
+                    },
+                    "description": "Json request is diferent than expected."
+                },
+                {
+                    "code": 401,
+                    "body": {
+                        "ERROR": "Unable to authorize with this token"
+                    },
+                    "description": "Token is not actual or not even exists. Requires login again."
+                }
+            ]
+        }
+    }
+}

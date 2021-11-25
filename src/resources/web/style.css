@@ -1,0 +1,147 @@
+.login {
+    position: fixed;
+    text-align: center;
+    top: 25%;
+    left: 50%;
+}
+
+.registerScreen {
+    position: fixed;
+    text-align: center;
+    top: 25%;
+    left: -50%;
+}
+
+.mainScreen {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0%;
+    left: 150%;
+    background-color: rgb(19, 104, 116);
+}
+
+.findChatDiv {
+    position: absolute;
+    height: 0px;
+    width: 0px;
+    background-color: greenyellow;
+    overflow: hidden;
+    display: none;
+}
+
+.chatsDiv {
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    background-color: red;
+}
+
+.chatDiv {
+    position: absolute;
+    width: 80%;
+    height: 100%;
+    left: 20%;
+    background-color: seagreen;
+}
+
+#chatsTableDiv {
+    position: relative;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+#chatTableDiv {
+    position: relative;
+    width: 70%;
+    height: 95%;
+    overflow-y: scroll;
+}
+
+.chatsTable {
+    position: relative;
+    width: 100%;
+}
+
+.chatTable {
+    position: relative;
+    width: 100%;
+}
+
+.messageBox {
+    position: absolute;
+    width: 60%;
+    bottom: 10px;
+    left: 5px;
+}
+
+.messageSend {
+    position: absolute;
+    bottom: 10px;
+    left: 61%;
+}
+
+.seenChat {
+    background-color: steelblue;
+}
+
+.unseenChat {
+    background-color: blueviolet;
+}
+
+.myMessage {
+    float: right;
+    text-align: right;
+    background-color: yellow;
+    width: fit-content;
+    min-height: 30px;
+}
+
+.otherMessage {
+    background-color: green;
+    width: fit-content;
+    min-height: 30px;
+}
+
+.userInMessage {
+    background-color: none;
+    position: relative;
+    width: 30px;
+    max-width: 30px;
+    max-height: 30px;
+}
+
+.chatPic {
+    width: 30px;
+    height: 30px;
+}
+
+.badInput {
+    background-color: red;
+}
+
+@keyframes animLogin {
+    100% {left: -100%;}
+}
+
+@keyframes animMainScreen {
+    100% {left: 0%;}
+}
+
+@keyframes registerLogin {
+    100% {left: 150%;}
+}
+
+@keyframes registerRegisterScreen {
+    100% {left: 50%;}
+}
+
+@keyframes registeredLogin {
+    0% {left: 150%}
+    100% {left: 50%;}
+}
+
+@keyframes registeredRegisterScreen {
+    0% {left: 50%;}
+    100% {left: -50%;}
+}

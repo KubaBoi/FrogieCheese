@@ -1,14 +1,68 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Cheese Application</title>
-</head>
-<body>
+<html lang="cs">
+    <head>
+        <meta charset='utf-8'>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+        <title>Frogie (Alpha testing)</title>
+    </head>
 
-<h1>Welcome to Dairy Development</h1>
-<h2>Everything seems good :)</h2>
-<p>You are reading this page and that's great because it means that your Cheese Application is configured right.</p>
-<p>Thank you for using Cheese Framework.</p>
+    <body>
+        <div id="registerScreen" class="registerScreen">
+            <p>REGISTRACE</p>
+            <input type="text" id="rname" name="rname" placeholder="Jméno" value="Kuba"><br><br>
+            <input type="text" id="rmail" name="rmail" placeholder="E-Mail" value="h"><br><br>
+            <input type="password" id="rpass1" name="rpass1" placeholder="Heslo" value="h"><br><br>
+            <input type="password" id="rpass2" name="rpass2" placeholder="Heslo znovu" value="h"><br><br>
+            <button id="bregister" name="bregister" onclick="register()">Registrovat se</button>
+        </div>
+        <div id="loginScreen" class="login">
+            <h1>FROGIE</h1>
+            <input type="text" id="fname" name="fname" placeholder="Jméno", value="Kuba"><br><br>
+            <input type="password" id="fpass" name="fpass" placeholder="Heslo", value="h"><br><br>
+            <button id="blogin" name="blogin" onclick="loginButton()">Přihlásit se</button>
+            <p>Nemáš účet? Tak to jsi gay.</p>
+            <button onclick="registerButton()">Registrovat</button>
+        </div>
+        <div id="mainScreen" class="mainScreen">
+            <div id="chatsDiv" class="chatsDiv">
+                <p id="loggedAs" onclick="updateChats()"></p>
+                <a href="http://45.76.87.30:8000/">Cloudos</a>
+                <input id="createChatInp" placeholder="Napiš jméno">
+                <table id="searchedUsersTable" name="searchedUsersTable"></table>
+                <hr style="border: solid green;">
+                <div id="chatsTableDiv">
+                    <table id="chatsTable" class="chatsTable"></table>
+                </div>
+            </div>
 
-</body>
+            <div id="chatDiv" class="chatDiv">
+                <div id="chatTableDiv">
+                    <table id="chatTable" class="chatTable"></table>
+                </div>
+                <textarea type="text" id="messageBox" class="messageBox" placeholder="Napiš zprávu"></textarea>
+                <button id="messageSend" class="messageSend" onclick="sendMess()">Odeslat</button>
+            </div>
+        </div>
+
+        <script src="scripts/variables.js"></script>
+        <script src="scripts/communication.js"></script>
+        <!--controllers-->
+        <script src="scripts/apiControllers/chatController.js"></script>
+        <script src="scripts/apiControllers/messageController.js"></script>
+        <script src="scripts/apiControllers/authenticationController.js"></script>
+        <script src="scripts/apiControllers/userController.js"></script>
+        <!--builders-->
+        <script src="scripts/documentBuilders/chatsBuilder.js"></script>
+        <script src="scripts/documentBuilders/chatBuilder.js"></script>
+        <script src="scripts/documentBuilders/searchedUsersBuilder.js"></script>
+        <script src="scripts/createChat.js"></script>
+        <script src="scripts/timeFunctions.js"></script>
+        <!--init script-->
+        <script src="scripts/start.js"></script>
+
+        <!--!!!!!!!!debug - remove for deploy!!!!!-->
+        <script>
+            //loginButton();
+        </script>
+    </body>
 </html>
