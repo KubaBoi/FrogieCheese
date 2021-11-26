@@ -7,6 +7,9 @@ from cheese.modules.cheeseController import CheeseController
 from python.authorization import Authorization
 
 #REST CONTROLLERS
+from python.controllers.authenticationController import AuthenticationController
+from python.controllers.chatController import ChatController
+from python.controllers.messageController import MessageController
 
 
 """
@@ -17,13 +20,47 @@ server handler of Cheese Application
 
 class CheeseServer(BaseHTTPRequestHandler):
     def do_GET(self):
-        if (self.path == "/"):
-            CheeseController.sendFile(self, "index.html")
+        path = CheeseController.getPath(self.path)
+        auth = Authorization.authorize(self, path, "GET")
+
+        if (path == "/"):
+            CheeseController.serveFile(self, "index.html")
+        elif (path.startswith("/authentication")):
+            pass
+        elif (path.startswith("/chats")):
+            pass
+        elif (path.startswith("/messages")):
+            pass
         else:
-            CheeseController.sendFile(self, self.path)
+            CheeseController.serveFile(self, self.path)
 
         pass
 
     def do_POST(self):
+        auth = Authorization.authorize(self, self.path, "POST")
+
+        if (self.path.startswith("/authentication")):
+            if (self.path == "/authentication/login"):
+                AuthenticationController.login(self, self.path, auth)
+            elif (self.path == "/authentication/getUserByToken"):
+                AuthenticationController.getUserByToken(self, self.path, auth)
+            else:
+                CheeseController.sendResponse(self, b"Endpoint not found :(", 404)
+        elif (self.path.startswith("/chats")):
+            if (self.path == "/chats/getChats"):
+                ChatController.getChats(self, self.path, auth)
+            elif (self.path == "/chats/getChatsId"):
+                ChatController.getChatsById(self, self.path, auth)
+            elif (self.path == "/chats/createChat"):
+                ChatController.createChat(self, self.path, auth)
+            else:
+                CheeseController.sendResponse(self, b"Endpoint not found :(", 404)
+        elif (self.path.startswith("/messages")):
+            if (self.path == "/messages/getChatMessages"):
+                MessageController.getChatMessages(self, self.path, auth)
+            else:
+                CheeseController.sendResponse(self, b"Endpoint not found :(", 404)
+        else:
+            CheeseController.sendResponse(self, b"Endpoint not found :(", 404)
 
         pass

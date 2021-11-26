@@ -3,6 +3,8 @@
 
 from urllib.parse import unquote
 import os
+import json
+import time
 
 from cheese.resourceManager import ResMan
 
@@ -13,10 +15,61 @@ REST controller of Cheese Application
 """
 
 class CheeseController:
-    
-    #send file
+
+    # return client address
     @staticmethod
-    def sendFile(server, file, header="text/html"):
+    def getClientAddress(server):
+        return server.client_address[0]
+
+    # return response
+    @staticmethod
+    def createResponse(dict, code):
+        return (bytes(json.dumps(dict), "utf-8"), code)
+
+    # return now time and add argument in seconds
+    @staticmethod
+    def getTime(addTime=0):
+        return int(time.time()) + addTime
+
+    # return true if all keys are in dictionary
+    @staticmethod
+    def validateJson(keys, dict):
+        for key in keys:
+            if (key not in dict):
+                return False
+        return True
+
+    # return path without arguments
+    @staticmethod
+    def getPath(url):
+        return url.split("?")[0]
+
+    # return arguments from rest request url
+    @staticmethod
+    def getArgs(url):
+        arguments = []
+        argsArray = url.split("?")
+        if (len(argsArray) > 1):
+            argsArray = argsArray[1].split("&")
+            for arg in argsArray:
+                spl = arg.split("=")
+                arguments.append(
+                    {
+                        spl[0] : spl[1]
+                    }
+                )
+        return arguments
+
+    # return arguments from body of request 
+    @staticmethod
+    def readArgs(server):
+        content_len = int(server.headers.get('Content-Length'))
+        post_body = server.rfile.read(content_len).decode("utf-8")
+        return json.loads(post_body)
+
+    # send file
+    @staticmethod
+    def serveFile(server, file, header="text/html"):
         file = unquote(file)
         file = ResMan.joinPath(ResMan.web(), file)
 
@@ -24,17 +77,17 @@ class CheeseController:
         
         if (not os.path.exists(f"{file}")):
             with open(f"{ResMan.error()}/error404.html", "rb") as f:
-                CheeseController.sendResponse(server, f.read(), 404)
+                CheeseController.sendResponse(server, (f.read(), 404))
             return
 
         with open(f"{file}", "rb") as f:
-            CheeseController.sendResponse(server, f.read(), 200, header)
+            CheeseController.sendResponse(server, (f.read(), 200), header)
 
-    # sends response
+    # send response
     @staticmethod
-    def sendResponse(server, content, errorCode, contentType="text/html"):
-        server.send_response(errorCode)
+    def sendResponse(server, error, contentType="text/html"):
+        server.send_response(error[1])
         server.send_header("Content-type", contentType)
         server.end_headers()
 
-        server.wfile.write(content)
+        server.wfile.write(error[0])

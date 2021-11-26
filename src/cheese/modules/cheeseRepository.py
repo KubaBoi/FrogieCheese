@@ -7,6 +7,12 @@ from cheese.resourceManager import ResMan
 from cheese.databaseControll.database import Database
 
 #REPOSITORIES
+from cheese.repositories.chatRepositoryImpl import ChatRepositoryImpl
+from cheese.repositories.chatTRepositoryImpl import ChatTRepositoryImpl
+from cheese.repositories.messageRepositoryImpl import MessageRepositoryImpl
+from cheese.repositories.passwordRepositoryImpl import PasswordRepositoryImpl
+from cheese.repositories.tokenRepositoryImpl import TokenRepositoryImpl
+from cheese.repositories.userRepositoryImpl import UserRepositoryImpl
 
 
 """
@@ -17,12 +23,222 @@ Database query of Cheese Application
 
 class CheeseRepository:
 
+    @staticmethod
+    def findChatById(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.findChatById(args)
+    @staticmethod
+    def findChatsFrom(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.findChatsFrom(args)
+    @staticmethod
+    def doesChatExists(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.doesChatExists(args)
+    @staticmethod
+    def findNewId(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.findNewId(args)
+        elif (userRepository == "chatTRepository"):
+            return ChatTRepositoryImpl.findNewId(args)
+        elif (userRepository == "messageRepository"):
+            return MessageRepositoryImpl.findNewId(args)
+        elif (userRepository == "passwordRepository"):
+            return PasswordRepositoryImpl.findNewId(args)
+        elif (userRepository == "userRepository"):
+            return UserRepositoryImpl.findNewId(args)
+    @staticmethod
+    def belongsToUserId(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.belongsToUserId(args)
+    @staticmethod
+    def findChatsByUserId(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.findChatsByUserId(args)
+    @staticmethod
+    def findChatsByIds(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.findChatsByIds(args)
+    @staticmethod
+    def findChatTByUserIdAndChatId(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatTRepository"):
+            return ChatTRepositoryImpl.findChatTByUserIdAndChatId(args)
+    @staticmethod
+    def findChatsByUserID(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatTRepository"):
+            return ChatTRepositoryImpl.findChatsByUserID(args)
+    @staticmethod
+    def findUndeliveredChatsByUserId(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatTRepository"):
+            return ChatTRepositoryImpl.findUndeliveredChatsByUserId(args)
+    @staticmethod
+    def findAllUsersFromChat(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "chatTRepository"):
+            return ChatTRepositoryImpl.findAllUsersFromChat(args)
+    @staticmethod
+    def findMessagesFrom(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "messageRepository"):
+            return MessageRepositoryImpl.findMessagesFrom(args)
+    @staticmethod
+    def findById(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "messageRepository"):
+            return MessageRepositoryImpl.findById(args)
+    @staticmethod
+    def findValidPassword(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "passwordRepository"):
+            return PasswordRepositoryImpl.findValidPassword(args)
+    @staticmethod
+    def findTokenByIdAndIpAndActive(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "tokenRepository"):
+            return TokenRepositoryImpl.findTokenByIdAndIpAndActive(args)
+    @staticmethod
+    def findToken(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "tokenRepository"):
+            return TokenRepositoryImpl.findToken(args)
+    @staticmethod
+    def validateTokenUnique(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "tokenRepository"):
+            return TokenRepositoryImpl.validateTokenUnique(args)
+    @staticmethod
+    def authorizeYourselfByToken(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "tokenRepository"):
+            return TokenRepositoryImpl.authorizeYourselfByToken(args)
+    @staticmethod
+    def findUserByCredentials(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "userRepository"):
+            return UserRepositoryImpl.findUserByCredentials(args)
+    @staticmethod
+    def findUserByName(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "userRepository"):
+            return UserRepositoryImpl.findUserByName(args)
+    @staticmethod
+    def findUserById(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "userRepository"):
+            return UserRepositoryImpl.findUserById(args)
+    @staticmethod
+    def validateUserName(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "userRepository"):
+            return UserRepositoryImpl.validateUserName(args)
+    @staticmethod
+    def findUserByIpAndToken(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "userRepository"):
+            return UserRepositoryImpl.findUserByIpAndToken(args)
+    @staticmethod
+    def findUsersDynamic(args):
+        userRepository = CheeseRepository.findUserRepository()
+        args = CheeseRepository.getTypeOf(args)
+
+        if (userRepository == "userRepository"):
+            return UserRepositoryImpl.findUsersDynamic(args)
 
 
+    @staticmethod
+    def save(args):
+        userRepository = CheeseRepository.findUserRepository()
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.save(args)
+        elif (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.save(args)
+        elif (userRepository == "chatTRepository"):
+            return ChatTRepositoryImpl.save(args)
+        elif (userRepository == "chatTRepository"):
+            return ChatTRepositoryImpl.save(args)
+        elif (userRepository == "messageRepository"):
+            return MessageRepositoryImpl.save(args)
+        elif (userRepository == "messageRepository"):
+            return MessageRepositoryImpl.save(args)
+        elif (userRepository == "passwordRepository"):
+            return PasswordRepositoryImpl.save(args)
+        elif (userRepository == "passwordRepository"):
+            return PasswordRepositoryImpl.save(args)
+        elif (userRepository == "tokenRepository"):
+            return TokenRepositoryImpl.save(args)
+        elif (userRepository == "tokenRepository"):
+            return TokenRepositoryImpl.save(args)
+        elif (userRepository == "userRepository"):
+            return UserRepositoryImpl.save(args)
+        elif (userRepository == "userRepository"):
+            return UserRepositoryImpl.save(args)
 
 
     @staticmethod
     def initRepositories():
+        ChatRepositoryImpl.init()
+        ChatTRepositoryImpl.init()
+        MessageRepositoryImpl.init()
+        PasswordRepositoryImpl.init()
+        TokenRepositoryImpl.init()
+        UserRepositoryImpl.init()
 
         pass
 
@@ -34,10 +250,21 @@ class CheeseRepository:
         userRepository = ResMan.getFileName(calframe[2][1]).replace(".py", "")
         return userRepository
 
+    # convert arguments
     @staticmethod
+    def getTypeOf(args):
+        newArgs = []
+        for arg in args:
+            if (type(arg) is str):
+                newArgs.append(f"\'{arg}\'")
+            else:
+                newArgs.append(arg)
+        return newArgs
+
+    """@staticmethod
     def save(a):
         print(a)
 
     @staticmethod 
     def saveTemp(table, object):
-        Database.commit(f"{table}")
+        Database.commit(f"{table}")"""

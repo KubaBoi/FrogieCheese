@@ -48,4 +48,4 @@ class Database:
     # commit when done
     @staticmethod
     def done():
-        Database.cursor.commit()
+        Database.connection.commit()
