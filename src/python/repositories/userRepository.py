@@ -52,7 +52,7 @@ class UserRepository(CheeseRepository):
     def findUserByIpAndToken(ip, token):
         return CheeseRepository.findUserByIpAndToken([ip, token])
 
-    #@query "select * from users u where LOWER(u.user_name) like :userNameStart%"
+    #@query "select * from users u where LOWER(u.user_name) like :userNameStart"
     #@return array
     @staticmethod
     def findUsersDynamic(userNameStart):

@@ -31,7 +31,7 @@ class ChatTRepositoryImpl:
         Database.done()
         resp = []
         for a in response:
-            resp.append(ChatTRepositoryImpl.toJson(a[0]))
+            resp.append(ChatTRepositoryImpl.toJson(a))
         return resp
 
     @staticmethod
@@ -42,7 +42,7 @@ class ChatTRepositoryImpl:
         Database.done()
         resp = []
         for a in response:
-            resp.append(ChatTRepositoryImpl.toJson(a[0]))
+            resp.append(ChatTRepositoryImpl.toJson(a))
         return resp
 
     @staticmethod
@@ -60,7 +60,7 @@ class ChatTRepositoryImpl:
         Database.done()
         resp = []
         for a in response:
-            resp.append(ChatTRepositoryImpl.toJson(a[0]))
+            resp.append(ChatTRepositoryImpl.toJson(a))
         return resp
 
     @staticmethod

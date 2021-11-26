@@ -57,6 +57,8 @@ class CheeseRepository:
             return MessageRepositoryImpl.findNewId(args)
         elif (userRepository == "passwordRepository"):
             return PasswordRepositoryImpl.findNewId(args)
+        elif (userRepository == "tokenRepository"):
+            return TokenRepositoryImpl.findNewId(args)
         elif (userRepository == "userRepository"):
             return UserRepositoryImpl.findNewId(args)
     @staticmethod

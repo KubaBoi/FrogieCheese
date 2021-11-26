@@ -6,6 +6,7 @@ from cheese.ErrorCodes import Error
 from python.controllers.authenticationController import AuthenticationController
 
 from python.repositories.chatRepository import ChatRepository
+from python.repositories.messageRepository import MessageRepository
 from python.repositories.userRepository import UserRepository
 from python.repositories.chatTRepository import ChatTRepository
 
@@ -21,7 +22,7 @@ class ChatController(CheeseController):
     def getChats(server, path, auth):
         if (auth == None):
             return
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["FROM_TIME"], args)):
@@ -45,7 +46,7 @@ class ChatController(CheeseController):
     def getChatsById(server, path, auth):
         if (auth == None):
             return
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["CHAT_IDS"], args)):
@@ -66,7 +67,7 @@ class ChatController(CheeseController):
     def createChat(server, path, auth):
         if (auth == None):
             return
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["CHAT_USERS"], args)):
@@ -99,13 +100,17 @@ class ChatController(CheeseController):
             )
         ChatRepository.save(newChat)
 
+        messageId = MessageRepository.findNewId()
+        firstMessage = (messageId, connectedUser["id"], "Ahoj", chatId, AuthenticationController.getTime())
+        MessageRepository.save(firstMessage)
+
         for userId in usersIds:
             newChatT = (
                 ChatTRepository.findNewId(),
                 userId,
                 chatId,
-                None,
-                None
+                messageId,
+                messageId
             )
             ChatTRepository.save(newChatT)
 

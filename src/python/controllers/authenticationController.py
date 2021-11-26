@@ -22,7 +22,7 @@ class AuthenticationController(CheeseController):
     #@post /login
     @staticmethod
     def login(server, path, auth):
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["USER_NAME", "PASSWORD"], args)):
@@ -84,12 +84,13 @@ class AuthenticationController(CheeseController):
             token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(AuthenticationController.TOKEN_LENGTH))
             while (not TokenRepository.validateTokenUnique(token)):
                 token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(AuthenticationController.TOKEN_LENGTH))
-            TokenRepository.save((token, userId, ip, CheeseController.getTime(AuthenticationController.TOKEN_DURATION)))
+            tokenId = TokenRepository.findNewId()
+            TokenRepository.save((tokenId, token, userId, ip, CheeseController.getTime(AuthenticationController.TOKEN_DURATION)))
             return token
         return token["token"]
 
     @staticmethod
     def updateToken(ip, token):
         token = TokenRepository.findToken(token, ip, AuthenticationController.getTime())
-        TokenRepository.update((token["token"], token["user_id"], ip, AuthenticationController.getTime(AuthenticationController.TOKEN_DURATION)))
+        TokenRepository.update((token["id"], token["token"], token["user_id"], ip, AuthenticationController.getTime(AuthenticationController.TOKEN_DURATION)))
 

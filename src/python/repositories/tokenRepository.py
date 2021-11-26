@@ -4,7 +4,7 @@
 from cheese.modules.cheeseRepository import CheeseRepository
 
 #@repository tokens
-#@dbscheme (token, user_id, ip, end_time)
+#@dbscheme (id, token, user_id, ip, end_time)
 class TokenRepository(CheeseRepository):
 
     #@query "select * from tokens t where
@@ -48,6 +48,12 @@ class TokenRepository(CheeseRepository):
     @staticmethod
     def authorizeYourselfByToken(token, ip, time):
         return CheeseRepository.authorizeYourselfByToken([token, ip, time])
+
+    #@query "select count(*) from tokens;"
+    #@return num
+    @staticmethod
+    def findNewId():
+        return CheeseRepository.findNewId([])
 
     @staticmethod
     def save(obj):

@@ -75,11 +75,11 @@ class UserRepositoryImpl:
     def findUsersDynamic(args):
         userNameStart = args[0]
 
-        response = Database.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where LOWER(u.user_name) like {userNameStart}%")
+        response = Database.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where LOWER(u.user_name) like {userNameStart}")
         Database.done()
         resp = []
         for a in response:
-            resp.append(UserRepositoryImpl.toJson(a[0]))
+            resp.append(UserRepositoryImpl.toJson(a))
         return resp
 
     @staticmethod

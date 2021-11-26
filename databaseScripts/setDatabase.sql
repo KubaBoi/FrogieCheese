@@ -63,7 +63,8 @@ CREATE TABLE IF NOT EXISTS public.tokens
     user_id bigint NOT NULL,
     ip text NOT NULL,
     end_time bigint NOT NULL,
-    PRIMARY KEY (token)
+    id bigint,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE IF NOT EXISTS public.passwords

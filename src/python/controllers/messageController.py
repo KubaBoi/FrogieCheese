@@ -22,7 +22,7 @@ class MessageController(CheeseController):
     def getChatMessages(server, path, auth):
         if (auth == None):
             return
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["FROM_TIME", "CHATS"], args)):
@@ -74,7 +74,7 @@ class MessageController(CheeseController):
     def sendMessage(server, path, auth):
         if (auth == None):
             return
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["CHAT_ID", "CONTENT"], args)):
@@ -108,7 +108,7 @@ class MessageController(CheeseController):
     def seenMessage(server, path, auth):
         if (auth == None):
             return
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["MESSAGE_ID"], args)):

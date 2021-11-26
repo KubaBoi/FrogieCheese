@@ -70,6 +70,14 @@ class CheeseServer(BaseHTTPRequestHandler):
         elif (self.path.startswith("/users")):
             if (self.path == "/users/createUser"):
                 UserController.createUser(self, self.path, auth)
+            elif (self.path == "/users/getUser"):
+                UserController.getUser(self, self.path, auth)
+            elif (self.path == "/users/getUserByName"):
+                UserController.getUserByName(self, self.path, auth)
+            elif (self.path == "/users/update"):
+                UserController.update(self, self.path, auth)
+            elif (self.path == "/users/getUserDynamic"):
+                UserController.getUserDynamic(self, self.path, auth)
             else:
                 CheeseController.sendResponse(self, b"Endpoint not found :(", 404)
         else:

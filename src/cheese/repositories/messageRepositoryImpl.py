@@ -22,7 +22,7 @@ class MessageRepositoryImpl:
         Database.done()
         resp = []
         for a in response:
-            resp.append(MessageRepositoryImpl.toJson(a[0]))
+            resp.append(MessageRepositoryImpl.toJson(a))
         return resp
 
     @staticmethod

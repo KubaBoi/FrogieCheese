@@ -22,7 +22,7 @@ class UserController(CheeseController):
     #@post /createUser
     @staticmethod
     def createUser(server, path, auth):
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["USER_NAME", "PASSWORD", "EMAIL"], args)):
@@ -48,14 +48,14 @@ class UserController(CheeseController):
 
         user = UserRepository.findUserById(userId)
         response = CheeseController.createResponse({"USER": user}, 200)
-        CheeseController.sendResponse(response)
+        CheeseController.sendResponse(server, response)
 
-    #post /getUser
+    #@post /getUser
     @staticmethod
     def getUser(server, path, auth):
         if (auth == None):
             return
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["USER_ID"], args)):
@@ -73,12 +73,12 @@ class UserController(CheeseController):
         response = CheeseController.createResponse({"USER": user}, 200)
         CheeseController.sendResponse(server, response)
 
-    #post /getUserByName
+    #@post /getUserByName
     @staticmethod
     def getUserByName(server, path, auth):
         if (auth == None):
             return
-        args = CheeseController.readArgs(server)
+        args = auth["args"]
 
         # bad json
         if (not CheeseController.validateJson(["USER_NAME"], args)):
@@ -96,12 +96,11 @@ class UserController(CheeseController):
         response = CheeseController.createResponse({"USER": user}, 200)
         CheeseController.sendResponse(server, response)
 
-    #post /update
+    #@post /update
     @staticmethod
     def update(server, path, auth):
         if (auth == None):
             return
-        args = CheeseController.readArgs(server)
 
         # OK
         connectedUser = auth["user"]
@@ -113,3 +112,22 @@ class UserController(CheeseController):
         response = CheeseController.createResponse({"CHANGES": ChatController.getChanges(connectedUser["id"])}, 200)
         CheeseController.sendResponse(server, response)
 
+    #@post /getUserDynamic
+    @staticmethod
+    def getUserDynamic(server, path, auth):
+        if (auth == None):
+            return
+        args = auth["args"]
+
+        # bad json
+        if (not CheeseController.validateJson(["USER_NAME_START"], args)):
+            CheeseController.sendResponse(server, Error.BadJson)
+            return
+
+        # OK
+        userNameStart = args["USER_NAME_START"]
+
+        users = UserRepository.findUsersDynamic(userNameStart.lower() + "%")
+
+        response = CheeseController.createResponse({"USERS": users}, 200)
+        CheeseController.sendResponse(server, response)

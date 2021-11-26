@@ -14,18 +14,21 @@ class Authorization:
 
     @staticmethod
     def authorize(server, path, method):
+        args = CheeseController.readArgs(server)
+
         if (path.startswith("/authentication/login")):
-            return None
+            return {"args": args}
         elif (path.startswith("/users/createUser")):
-            return None
+            return {"args": args}
         else:
-            token = Authorization.getToken(server)
+            token = Authorization.getToken(server, args)
             if (Authorization.authorizeByToken(server, token)):
                 ip = CheeseController.getClientAddress(server)
                 return {
                     "user": UserRepository.findUserByIpAndToken(ip, token),
                     "token": token,
-                    "ip": ip
+                    "ip": ip,
+                    "args": args
                 }
             
             CheeseController.sendResponse(server, Error.BadToken)
@@ -33,8 +36,7 @@ class Authorization:
 
 
     @staticmethod
-    def getToken(server):
-        args = CheeseController.readArgs(server)
+    def getToken(server, args):
         # bad json
         if (not CheeseController.validateJson(["TOKEN"], args)):
             CheeseController.sendResponse(server, Error.BadJson)

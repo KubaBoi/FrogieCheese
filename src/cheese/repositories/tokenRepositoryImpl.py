@@ -9,8 +9,8 @@ class TokenRepositoryImpl:
     @staticmethod
     def init():
         TokenRepositoryImpl.table = "tokens"
-        TokenRepositoryImpl.scheme = "(token,user_id,ip,end_time)"
-        TokenRepositoryImpl.schemeNoBrackets = "token,user_id,ip,end_time"
+        TokenRepositoryImpl.scheme = "(id,token,user_id,ip,end_time)"
+        TokenRepositoryImpl.schemeNoBrackets = "id,token,user_id,ip,end_time"
 
     @staticmethod
     def findTokenByIdAndIpAndActive(args):
@@ -55,6 +55,13 @@ class TokenRepositoryImpl:
         Database.done()
         if (response[0][0] == "1"): return True
         return False
+
+    @staticmethod
+    def findNewId(args):
+
+        response = Database.query(f"select count(*) from tokens;")
+        Database.done()
+        return int(response[0][0])
 
     @staticmethod
     def save(args):
