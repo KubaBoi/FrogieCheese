@@ -55,11 +55,11 @@ class MessageRepositoryImpl:
             return False
 
     @staticmethod
-    def save(args):
+    def update(args):
         obj = args[0]
 
         try:
-            Database.commit(f"update {MessageRepositoryImpl.table} set ")
+            Database.commit(f"update {MessageRepositoryImpl.table} set {MessageRepositoryImpl.scheme} = {obj} where id={obj[0]};")
             Database.done()
             return True
         except Exception as e:

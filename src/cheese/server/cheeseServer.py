@@ -10,6 +10,7 @@ from python.authorization import Authorization
 from python.controllers.authenticationController import AuthenticationController
 from python.controllers.chatController import ChatController
 from python.controllers.messageController import MessageController
+from python.controllers.userController import UserController
 
 
 """
@@ -30,6 +31,8 @@ class CheeseServer(BaseHTTPRequestHandler):
         elif (path.startswith("/chats")):
             pass
         elif (path.startswith("/messages")):
+            pass
+        elif (path.startswith("/users")):
             pass
         else:
             CheeseController.serveFile(self, self.path)
@@ -58,6 +61,15 @@ class CheeseServer(BaseHTTPRequestHandler):
         elif (self.path.startswith("/messages")):
             if (self.path == "/messages/getChatMessages"):
                 MessageController.getChatMessages(self, self.path, auth)
+            elif (self.path == "/messages/sendMessage"):
+                MessageController.sendMessage(self, self.path, auth)
+            elif (self.path == "/messages/seenMessage"):
+                MessageController.seenMessage(self, self.path, auth)
+            else:
+                CheeseController.sendResponse(self, b"Endpoint not found :(", 404)
+        elif (self.path.startswith("/users")):
+            if (self.path == "/users/createUser"):
+                UserController.createUser(self, self.path, auth)
             else:
                 CheeseController.sendResponse(self, b"Endpoint not found :(", 404)
         else:

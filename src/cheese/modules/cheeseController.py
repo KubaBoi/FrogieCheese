@@ -85,9 +85,9 @@ class CheeseController:
 
     # send response
     @staticmethod
-    def sendResponse(server, error, contentType="text/html"):
-        server.send_response(error[1])
+    def sendResponse(server, response, contentType="text/html"):
+        server.send_response(response[1])
         server.send_header("Content-type", contentType)
         server.end_headers()
 
-        server.wfile.write(error[0])
+        server.wfile.write(response[0])

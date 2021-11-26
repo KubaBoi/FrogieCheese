@@ -76,11 +76,11 @@ class ChatTRepositoryImpl:
             return False
 
     @staticmethod
-    def save(args):
+    def update(args):
         obj = args[0]
 
         try:
-            Database.commit(f"update {ChatTRepositoryImpl.table} set ")
+            Database.commit(f"update {ChatTRepositoryImpl.table} set {ChatTRepositoryImpl.scheme} = {obj} where id={obj[0]};")
             Database.done()
             return True
         except Exception as e:

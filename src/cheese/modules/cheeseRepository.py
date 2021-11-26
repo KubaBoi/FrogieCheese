@@ -207,28 +207,32 @@ class CheeseRepository:
 
         if (userRepository == "chatRepository"):
             return ChatRepositoryImpl.save(args)
-        elif (userRepository == "chatRepository"):
-            return ChatRepositoryImpl.save(args)
-        elif (userRepository == "chatTRepository"):
-            return ChatTRepositoryImpl.save(args)
         elif (userRepository == "chatTRepository"):
             return ChatTRepositoryImpl.save(args)
         elif (userRepository == "messageRepository"):
             return MessageRepositoryImpl.save(args)
+        elif (userRepository == "passwordRepository"):
+            return PasswordRepositoryImpl.save(args)
+        elif (userRepository == "tokenRepository"):
+            return TokenRepositoryImpl.save(args)
+        elif (userRepository == "userRepository"):
+            return UserRepositoryImpl.save(args)
+    @staticmethod
+    def update(args):
+        userRepository = CheeseRepository.findUserRepository()
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.update(args)
+        elif (userRepository == "chatTRepository"):
+            return ChatTRepositoryImpl.update(args)
         elif (userRepository == "messageRepository"):
-            return MessageRepositoryImpl.save(args)
+            return MessageRepositoryImpl.update(args)
         elif (userRepository == "passwordRepository"):
-            return PasswordRepositoryImpl.save(args)
-        elif (userRepository == "passwordRepository"):
-            return PasswordRepositoryImpl.save(args)
+            return PasswordRepositoryImpl.update(args)
         elif (userRepository == "tokenRepository"):
-            return TokenRepositoryImpl.save(args)
-        elif (userRepository == "tokenRepository"):
-            return TokenRepositoryImpl.save(args)
+            return TokenRepositoryImpl.update(args)
         elif (userRepository == "userRepository"):
-            return UserRepositoryImpl.save(args)
-        elif (userRepository == "userRepository"):
-            return UserRepositoryImpl.save(args)
+            return UserRepositoryImpl.update(args)
 
 
     @staticmethod

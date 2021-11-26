@@ -16,6 +16,8 @@ class Authorization:
     def authorize(server, path, method):
         if (path.startswith("/authentication/login")):
             return None
+        elif (path.startswith("/users/createUser")):
+            return None
         else:
             token = Authorization.getToken(server)
             if (Authorization.authorizeByToken(server, token)):

@@ -114,6 +114,19 @@ class ChatController(CheeseController):
         CheeseController.sendResponse(server, response)
 
 
+    #METHODS
+
+    @staticmethod
+    def updateChat(chatId):
+        chat = ChatRepository.findChatById(chatId)
+        ChatRepository.update((chat["id"], chat["chat_name"], AuthenticationController.getTime(), chat["picture_id"]))
+
+    @staticmethod
+    def getChanges(userId):
+        chats = ChatTRepository.findUndeliveredChatsByUserId(userId)
+        return chats
+
+
 
 
     

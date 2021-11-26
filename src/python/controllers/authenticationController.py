@@ -88,3 +88,8 @@ class AuthenticationController(CheeseController):
             return token
         return token["token"]
 
+    @staticmethod
+    def updateToken(ip, token):
+        token = TokenRepository.findToken(token, ip, AuthenticationController.getTime())
+        TokenRepository.update((token["token"], token["user_id"], ip, AuthenticationController.getTime(AuthenticationController.TOKEN_DURATION)))
+

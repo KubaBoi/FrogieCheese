@@ -7,6 +7,7 @@ from cheese.resourceManager import ResMan
 from python.controllers.authenticationController import AuthenticationController
 from python.controllers.chatController import ChatController
 from python.controllers.messageController import MessageController
+from python.controllers.userController import UserController
 
 
 """
@@ -22,5 +23,6 @@ class ControllerManager:
         AuthenticationController.init()
         ChatController.init()
         MessageController.init()
+        UserController.init()
 
         pass

@@ -95,11 +95,11 @@ class UserRepositoryImpl:
             return False
 
     @staticmethod
-    def save(args):
+    def update(args):
         obj = args[0]
 
         try:
-            Database.commit(f"update {UserRepositoryImpl.table} set ")
+            Database.commit(f"update {UserRepositoryImpl.table} set {UserRepositoryImpl.scheme} = {obj} where id={obj[0]};")
             Database.done()
             return True
         except Exception as e:

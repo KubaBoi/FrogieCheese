@@ -53,5 +53,9 @@ class TokenRepository(CheeseRepository):
     def save(obj):
         return CheeseRepository.save([obj])
 
+    @staticmethod
+    def update(obj):
+        return CheeseRepository.update([obj])
+
     
     
