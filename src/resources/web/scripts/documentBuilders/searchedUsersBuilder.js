@@ -10,7 +10,7 @@ function addSearchedUser(user) {
 
     row.appendChild(cellImg);
     row.appendChild(cellName);
-    row.setAttribute("onclick", "createChatButton(" + user.USER_ID + ")");
+    row.setAttribute("onclick", "createChatButton(" + user.ID + ")");
     
     searchedUsersTable.appendChild(row);
 }

@@ -24,7 +24,7 @@ function addChat(chat) {
 
     if (chat.MESSAGES.MESSAGES.length > 0) {
         //marks if chat is seen
-        if (chat.MESSAGES.LAST_SEEN_MESSAGE_ID != chat.MESSAGES.MESSAGES[0].MESSAGE_ID) {
+        if (chat.MESSAGES.LAST_SEEN_MESSAGE_ID != chat.MESSAGES.MESSAGES[0].ID) {
             chatClass = "unseenChat";
         }
 
@@ -37,7 +37,7 @@ function addChat(chat) {
 
     for (var i = 0; i < chat.CHAT_USERS.length; i++) {
         var user = chat.CHAT_USERS[i];
-        if (user.USER_ID != connectedUser.USER_ID) {
+        if (user.ID != connectedUser.ID) {
             cellContent.innerHTML = "<b>" + user.USER_NAME + "</b> ";
             cellUserImg.innerHTML = "<img class='chatPic' src='/pictures/" + user.PICTURE_ID + ".jpg'>";
         }
@@ -47,7 +47,7 @@ function addChat(chat) {
     cellContent.setAttribute("class", chatClass);
 
     var row = document.createElement("tr");
-    row.setAttribute("onclick", "showChat(" + chat.CHAT_ID + ")");
+    row.setAttribute("onclick", "showChat(" + chat.ID + ")");
     row.appendChild(cellUserImg);
     row.appendChild(cellContent);
     

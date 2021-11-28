@@ -2,10 +2,8 @@
 async function updateChats() {
     var changes = await update();
     if (changes.ERROR == null && changes.CHANGES.length > 0) {
-
         var updatedChats = await getChatsById(changes.CHANGES);
         if (updatedChats.ERROR == null) {
-
             for (var i = 0; i < updatedChats.length; i++) {
                 var isIn = false;
                 var updatedChat = updatedChats[i];
@@ -33,7 +31,7 @@ async function updateChats() {
                     else {
                         for (var m = 0; m < chatMessages.MESSAGES.length; m++) {
                             var mC = chatMessages.MESSAGES[m];
-                            if (mC.MESSAGE_ID > chat.MESSAGES.LAST_DELIVERED_MESSAGE_ID) {
+                            if (mC.ID > chat.MESSAGES.LAST_DELIVERED_MESSAGE_ID) {
                                 chat.MESSAGES.MESSAGES.push(mC);
                             }
                         }

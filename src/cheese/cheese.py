@@ -10,7 +10,6 @@ from cheese.resourceManager import ResMan
 from cheese.appSettings import Settings
 from cheese.server.cheeseServer import CheeseServer
 from cheese.databaseControll.database import Database
-from cheese.controllerManager import ControllerManager
 from cheese.modules.cheeseRepository import CheeseRepository
 from cheese.ErrorCodes import Error
 """
@@ -36,9 +35,6 @@ class Cheese:
         # connect to database
         Database.connect()
 
-        #initialization of controllers
-        ControllerManager.initControllers()
-
         #initialization of repositories
         CheeseRepository.initRepositories()
 
@@ -58,6 +54,8 @@ class Cheese:
             Cheese.server.serve_forever()
         except KeyboardInterrupt:
             pass
+        except Exception as e:
+            print(e)
         print(time.asctime(), f"Server Stops - {Settings.host}:{Settings.port}")
 
     # init print

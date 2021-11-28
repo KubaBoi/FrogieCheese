@@ -10,7 +10,7 @@ function getChats(fromTime) {
     );
     
     return new Promise(resolve => {
-        sendPost(url, request, debug, function(response){
+        sendPost(url, request, debug, function(response) { 
             resolve(response);
         });
     });
@@ -37,6 +37,7 @@ function getChatsById(ids) {
 //endpoint call
 function createChat(chatUsers) {
     var url = "/chats/createChat";
+    console.log(chatUsers);
     var request = JSON.stringify(
         { 
             "TOKEN": token,

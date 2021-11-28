@@ -5,6 +5,7 @@ from cheese.modules.cheeseRepository import CheeseRepository
 
 #@repository messages
 #@dbscheme (id, author_id, content, chat_id, time_stamp)
+#@dbmodel Message
 class MessageRepository(CheeseRepository):
 
     #@query "select distinct m.id, author_id, content, m.chat_id, m.time_stamp from messages m

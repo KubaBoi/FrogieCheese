@@ -5,6 +5,7 @@ from cheese.modules.cheeseRepository import CheeseRepository
 
 #@repository tokens
 #@dbscheme (id, token, user_id, ip, end_time)
+#@dbmodel Token
 class TokenRepository(CheeseRepository):
 
     #@query "select * from tokens t where

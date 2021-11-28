@@ -5,6 +5,7 @@ from cheese.modules.cheeseRepository import CheeseRepository
 
 #@repository passwords
 #@dbscheme (id, user_id, password, duration)
+#@dbmodel Password
 class PasswordRepository(CheeseRepository):
 
     #@query "select case when exists

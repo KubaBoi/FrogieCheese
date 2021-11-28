@@ -11,13 +11,13 @@ from python.repositories.userRepository import UserRepository
 from python.repositories.passwordRepository import PasswordRepository
 from python.repositories.tokenRepository import TokenRepository
 
+from python.models.Token import Token
+
 #@controller /authentication
 class AuthenticationController(CheeseController):
 
-    @staticmethod
-    def init():
-        AuthenticationController.TOKEN_LENGTH = 20
-        AuthenticationController.TOKEN_DURATION = 3600 # 1 hour
+    TOKEN_LENGTH = 20
+    TOKEN_DURATION = 3600 # 1 hour
 
     #@post /login
     @staticmethod
@@ -38,18 +38,18 @@ class AuthenticationController(CheeseController):
         if (user == None):
             user = UserRepository.findUserByName(userName)
             if (user != None):
-                if (PasswordRepository.findValidPassword(user["id"])):
+                if (PasswordRepository.findValidPassword(user.id)):
                     CheeseController.sendResponse(server, Error.OldPass)
                     return
             CheeseController.sendResponse(server, Error.BadCred)
             return
 
         # OK
-        token = AuthenticationController.generateToken(user["id"], ip)
+        token = AuthenticationController.generateToken(user.id, ip)
 
         response = CheeseController.createResponse(
             {
-                "USER": user,
+                "USER": user.toJson(),
                 "TOKEN": token
             }, 200
         )
@@ -85,12 +85,16 @@ class AuthenticationController(CheeseController):
             while (not TokenRepository.validateTokenUnique(token)):
                 token = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(AuthenticationController.TOKEN_LENGTH))
             tokenId = TokenRepository.findNewId()
-            TokenRepository.save((tokenId, token, userId, ip, CheeseController.getTime(AuthenticationController.TOKEN_DURATION)))
-            return token
-        return token["token"]
+
+            token = Token(tokenId, token, userId, ip, CheeseController.getTime(AuthenticationController.TOKEN_DURATION))
+
+            TokenRepository.save(token)
+            return token.token
+        return token.token
 
     @staticmethod
     def updateToken(ip, token):
         token = TokenRepository.findToken(token, ip, AuthenticationController.getTime())
-        TokenRepository.update((token["id"], token["token"], token["user_id"], ip, AuthenticationController.getTime(AuthenticationController.TOKEN_DURATION)))
+        token.end_time = AuthenticationController.getTime(AuthenticationController.TOKEN_DURATION)
+        TokenRepository.update(token)
 

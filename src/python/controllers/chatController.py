@@ -10,12 +10,14 @@ from python.repositories.messageRepository import MessageRepository
 from python.repositories.userRepository import UserRepository
 from python.repositories.chatTRepository import ChatTRepository
 
+from python.models.Chat import Chat
+from python.models.Message import Message
+from python.models.ChatT import ChatT
+
 #@controller /chats
 class ChatController(CheeseController):
 
-    @staticmethod
-    def init():
-        ChatController.MAX_SENDED_CHATS = 20
+    MAX_SENDED_CHATS = 20
 
     #@post /getChats
     @staticmethod
@@ -36,12 +38,21 @@ class ChatController(CheeseController):
         if (fromTime == 0):
             fromTime = AuthenticationController.getTime(0)
 
-        chats = ChatRepository.findChatsFrom(connectedUser["id"], fromTime, ChatController.MAX_SENDED_CHATS)
-        response = CheeseController.createResponse({"CHATS": chats}, 200)
+        chats = ChatRepository.findChatsFrom(connectedUser.id, fromTime, ChatController.MAX_SENDED_CHATS)
+        jsonArray = []
+        for chat in chats:
+            chatUsers = ChatTRepository.findAllUsersFromChat(chat.id)
+            users = []
+            for user in chatUsers:
+                users.append(UserRepository.findUserById(user.user_id))
 
+            chat.chat_users = users
+            jsonArray.append(chat.toJson())
+
+        response = CheeseController.createResponse({"CHATS": jsonArray}, 200)
         CheeseController.sendResponse(server, response)
 
-    #@post /getChatsId
+    #@post /getChatsById
     @staticmethod
     def getChatsById(server, path, auth):
         if (auth == None):
@@ -58,7 +69,10 @@ class ChatController(CheeseController):
         connectedUser = auth["user"]
 
         chats = ChatRepository.findChatsByIds(ids)
-        response = CheeseController.createResponse({"CHATS": chats}, 200)
+        jsonArray = []
+        for chat in chats:
+            jsonArray.append(chat.toJson())
+        response = CheeseController.createResponse({"CHATS": jsonArray}, 200)
 
         CheeseController.sendResponse(server, response)
 
@@ -80,7 +94,7 @@ class ChatController(CheeseController):
     
         users = []
         for userId in usersIds:
-            if (ChatRepository.doesChatExists(connectedUser["id"], userId) and userId != connectedUser["id"]):
+            if (ChatRepository.doesChatExists(connectedUser.id, userId) and userId != connectedUser.id):
                 Error.sendCustomError(server, "Chat already exists", 409) # Conflict
                 return
             
@@ -92,7 +106,7 @@ class ChatController(CheeseController):
 
         chatName = ""
         chatId = ChatRepository.findNewId()
-        newChat = (
+        newChat = Chat(
                 chatId,
                 chatName,
                 AuthenticationController.getTime(),
@@ -101,11 +115,11 @@ class ChatController(CheeseController):
         ChatRepository.save(newChat)
 
         messageId = MessageRepository.findNewId()
-        firstMessage = (messageId, connectedUser["id"], "Ahoj", chatId, AuthenticationController.getTime())
+        firstMessage = Message(messageId, connectedUser.id, "Ahoj", chatId, AuthenticationController.getTime())
         MessageRepository.save(firstMessage)
 
         for userId in usersIds:
-            newChatT = (
+            newChatT = ChatT(
                 ChatTRepository.findNewId(),
                 userId,
                 chatId,
@@ -114,7 +128,7 @@ class ChatController(CheeseController):
             )
             ChatTRepository.save(newChatT)
 
-        response = CheeseController.createResponse({"CHAT": newChat}, 200)
+        response = CheeseController.createResponse({"CHAT": newChat.toJson()}, 200)
 
         CheeseController.sendResponse(server, response)
 
@@ -124,7 +138,8 @@ class ChatController(CheeseController):
     @staticmethod
     def updateChat(chatId):
         chat = ChatRepository.findChatById(chatId)
-        ChatRepository.update((chat["id"], chat["chat_name"], AuthenticationController.getTime(), chat["picture_id"]))
+        chat.last_activity = AuthenticationController.getTime()
+        ChatRepository.update(chat)
 
     @staticmethod
     def getChanges(userId):

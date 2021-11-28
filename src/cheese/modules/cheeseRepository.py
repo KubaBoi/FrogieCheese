@@ -263,8 +263,10 @@ class CheeseRepository:
         for arg in args:
             if (type(arg) is str):
                 newArgs.append(f"\'{arg}\'")
+            elif (type(arg) is list):
+                newArgs.append("(" + ",".join(CheeseRepository.getTypeOf(arg)) + ")")
             else:
-                newArgs.append(arg)
+                newArgs.append(str(arg))
         return newArgs
 
     """@staticmethod

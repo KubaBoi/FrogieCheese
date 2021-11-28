@@ -5,12 +5,13 @@ async function loginButton() {
         token = loginResponse.TOKEN;
 
         document.querySelector("#loggedAs").innerHTML = connectedUser.USER_NAME; //debug
+        
         chatsArray = await getChats(0);
         if (chatsArray.ERROR == null) { 
             chatsArray = chatsArray.CHATS;
             chatIds = [];
             for (var i = 0; i < chatsArray.length; i++) {
-                chatIds.push(chatsArray[i].CHAT_ID);
+                chatIds.push(chatsArray[i].ID);
             }
 
             var chatMessages = await getChatMessages(0, chatIds);

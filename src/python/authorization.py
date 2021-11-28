@@ -16,7 +16,9 @@ class Authorization:
     def authorize(server, path, method):
         args = CheeseController.readArgs(server)
 
-        if (path.startswith("/authentication/login")):
+        if (path == "/" or path.endswith(".css") or path.endswith(".js") or path.endswith(".ico") or path.endswith(".jpg")):
+            return None
+        elif (path.startswith("/authentication/login")):
             return {"args": args}
         elif (path.startswith("/users/createUser")):
             return {"args": args}

@@ -5,6 +5,7 @@ from cheese.modules.cheeseRepository import CheeseRepository
 
 #@repository chats
 #@dbscheme (id, chat_name, last_activity, picture_id)
+#@dbmodel Chat
 class ChatRepository(CheeseRepository):
 
     #@query "select * from chats c where c.id = :chatId;"

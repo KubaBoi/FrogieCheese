@@ -52,7 +52,7 @@ class CheeseServer(BaseHTTPRequestHandler):
         elif (self.path.startswith("/chats")):
             if (self.path == "/chats/getChats"):
                 ChatController.getChats(self, self.path, auth)
-            elif (self.path == "/chats/getChatsId"):
+            elif (self.path == "/chats/getChatsById"):
                 ChatController.getChatsById(self, self.path, auth)
             elif (self.path == "/chats/createChat"):
                 ChatController.createChat(self, self.path, auth)

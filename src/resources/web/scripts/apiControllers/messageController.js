@@ -1,7 +1,7 @@
 // finds index of chat in local chatsArray
 function findChatIndexById(chatId) {
     for (let i = 0; i < chatsArray.length; i++) {
-        if (chatsArray[i].CHAT_ID == chatId) {
+        if (chatsArray[i].ID == chatId) {
             return i;
         }
     }

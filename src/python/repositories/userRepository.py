@@ -5,9 +5,10 @@ from cheese.modules.cheeseRepository import CheeseRepository
 
 #@repository users
 #@dbscheme (id, user_name, email, picture_id)
+#@dbmodel User
 class UserRepository(CheeseRepository):
 
-    #@query "select u.id, u.email, u.user_name, u.picture_id from passwords p
+    #@query "select u.id, u.user_name, u.email, u.picture_id from passwords p
     #        inner join users u
     #        on u.id = p.user_id
     #        where p.password = :password and p.duration > :duration and u.user_name = :userName;"
@@ -43,7 +44,7 @@ class UserRepository(CheeseRepository):
     def findNewId():
         return CheeseRepository.findNewId([])
 
-    #@query "select u.id, u.user_name, u.picture_id, u.email from users u
+    #@query "select u.id, u.user_name, u.email, u.picture_id from users u
     #        inner join tokens t
     #        on t.user_id = u.id
     #        where t.token = :token and t.ip = :ip;"

@@ -5,6 +5,8 @@ from cheese.modules.cheeseController import CheeseController
 from cheese.ErrorCodes import Error
 from python.controllers.authenticationController import AuthenticationController
 from python.controllers.chatController import ChatController
+from python.models.Password import Password
+from python.models.User import User
 
 from python.repositories.chatRepository import ChatRepository
 from python.repositories.passwordRepository import PasswordRepository
@@ -15,9 +17,7 @@ from python.repositories.messageRepository import MessageRepository
 #@controller /users
 class UserController(CheeseController):
 
-    @staticmethod
-    def init():
-        UserController.PASSWORD_DURATION = 432000 # 5 days
+    PASSWORD_DURATION = 432000 # 5 days
 
     #@post /createUser
     @staticmethod
@@ -41,13 +41,12 @@ class UserController(CheeseController):
         userId = UserRepository.findNewId()
         passId = PasswordRepository.findNewId()
 
-        user = (userId, userName, email, 5)
+        user = User(userId, userName, email, 5)
         UserRepository.save(user)
-        passW = (passId, userId, password, AuthenticationController.getTime(UserController.PASSWORD_DURATION))
+        passW = Password(passId, userId, password, AuthenticationController.getTime(UserController.PASSWORD_DURATION))
         PasswordRepository.save(passW)
 
-        user = UserRepository.findUserById(userId)
-        response = CheeseController.createResponse({"USER": user}, 200)
+        response = CheeseController.createResponse({"USER": user.toJson()}, 200)
         CheeseController.sendResponse(server, response)
 
     #@post /getUser
@@ -70,7 +69,7 @@ class UserController(CheeseController):
             Error.sendCustomError(server, "Unknown user", 404)
             return
         
-        response = CheeseController.createResponse({"USER": user}, 200)
+        response = CheeseController.createResponse({"USER": user.toJson()}, 200)
         CheeseController.sendResponse(server, response)
 
     #@post /getUserByName
@@ -93,7 +92,7 @@ class UserController(CheeseController):
             Error.sendCustomError(server, "Uknown user", 404)
             return
 
-        response = CheeseController.createResponse({"USER": user}, 200)
+        response = CheeseController.createResponse({"USER": user.toJson()}, 200)
         CheeseController.sendResponse(server, response)
 
     #@post /update
@@ -109,7 +108,11 @@ class UserController(CheeseController):
 
         AuthenticationController.updateToken(ip, token)
 
-        response = CheeseController.createResponse({"CHANGES": ChatController.getChanges(connectedUser["id"])}, 200)
+        changes = ChatController.getChanges(connectedUser.id)
+        changesJson = []
+        for change in changes:
+            changesJson.append(change.chat_id)
+        response = CheeseController.createResponse({"CHANGES": changesJson}, 200)
         CheeseController.sendResponse(server, response)
 
     #@post /getUserDynamic
@@ -128,6 +131,9 @@ class UserController(CheeseController):
         userNameStart = args["USER_NAME_START"]
 
         users = UserRepository.findUsersDynamic(userNameStart.lower() + "%")
+        jsonUsers = []
+        for user in users:
+            jsonUsers.append(user.toJson())
 
-        response = CheeseController.createResponse({"USERS": users}, 200)
+        response = CheeseController.createResponse({"USERS": jsonUsers}, 200)
         CheeseController.sendResponse(server, response)
