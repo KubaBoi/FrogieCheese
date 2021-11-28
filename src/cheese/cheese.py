@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from http import server
 import time
 from pathlib import Path
 
@@ -44,6 +45,7 @@ class Cheese:
     # initialization application server
     @staticmethod
     def initServer():
+        print(Settings.host, Settings.port)
         Cheese.server = HTTPServer((Settings.host, Settings.port), CheeseServer)
 
     # start server
