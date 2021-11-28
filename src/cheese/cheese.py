@@ -47,6 +47,7 @@ class Cheese:
     def initServer():
         print(Settings.host, Settings.port)
         Cheese.server = HTTPServer((Settings.host, Settings.port), CheeseServer)
+        print("DVAKRAT??")
 
     # start server
     @staticmethod
