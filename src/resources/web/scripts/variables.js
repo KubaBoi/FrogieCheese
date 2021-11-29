@@ -22,7 +22,7 @@ var renameChatInp = document.querySelector("#renameChatInp");
 var settName = document.querySelector("#settName");
 var settPic = document.querySelector("#settPic");
 
-var debug = false;
+var debug = true;
 
 // other
 var chatsArray = 
