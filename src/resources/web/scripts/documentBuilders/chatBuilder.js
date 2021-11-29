@@ -42,7 +42,7 @@ function addMessage(author, message) {
     if (author.ID != connectedUser.ID) {        
         cellClass = "otherMessage";
 
-        cellUser.innerHTML = "<img class='chatPic' src='/pictures/" + author.PICTURE_ID + ".jpg'>";
+        cellUser.innerHTML = "<img class='chatPic' src='/pictures/" + author.PICTURE_ID + ".png' title='" + author.USER_NAME + "'>";
         cellUser.setAttribute("class", "userInMessage");
 
     }
@@ -58,6 +58,28 @@ function addMessage(author, message) {
     chatTable.appendChild(row);
 }
 
+function doChatInfo(chat) {
+    deleteWholeTable(chatUsersTable);
+
+    openChatName.innerHTML = chat.CHAT_NAME;
+    openChatImg.setAttribute("src", "/pictures/" + chat.PICTURE_ID + ".png");
+
+    for (var i = 0; i < chat.CHAT_USERS.length; i++) {
+        var user = chat.CHAT_USERS[i];
+        var row = document.createElement("tr");
+        var cellImg = document.createElement("td");
+        var cellUser = document.createElement("td");
+
+        cellImg.innerHTML = "<img class='chatPic' src='/pictures/" + user.PICTURE_ID + ".png'>";
+        cellUser.innerHTML = user.USER_NAME;
+
+        row.appendChild(cellImg);
+        row.appendChild(cellUser);
+
+        chatUsersTable.appendChild(row);
+    }
+}
+
 // builds chat in chatDiv
 async function showChat(chatId) {
     if (chatsArray.length > 0 && chatId != null) {
@@ -66,6 +88,7 @@ async function showChat(chatId) {
         localChatArray = findChatIndexById(chatId);
 
         chat = chatsArray[localChatArray];
+        doChatInfo(chat);
         if (chat.MESSAGES != null) {
             openChat = chatId;
             

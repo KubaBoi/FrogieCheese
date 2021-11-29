@@ -3,7 +3,7 @@
         <meta charset='utf-8'>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="style.css">
-        <title>Frogie (Alpha testing)</title>
+        <title>Frogie (Beta testing)</title>
     </head>
 
     <body>
@@ -25,11 +25,11 @@
         </div>
         <div id="mainScreen" class="mainScreen">
             <div id="chatsDiv" class="chatsDiv">
-                <p id="loggedAs" onclick="updateChats()"></p>
-                <a href="http://45.76.87.30:8000/">Cloudos</a>
+                <img id="loggedAsImg" class="chatPic">
+                <label id="loggedAs" onclick="userSettingsButton()"></label><br><br>
                 <input id="createChatInp" placeholder="Napiš jméno">
                 <table id="searchedUsersTable" name="searchedUsersTable"></table>
-                <hr style="border: solid green;">
+                <hr style="border: solid #2b2a2a;">
                 <div id="chatsTableDiv">
                     <table id="chatsTable" class="chatsTable"></table>
                 </div>
@@ -39,8 +39,28 @@
                 <div id="chatTableDiv">
                     <table id="chatTable" class="chatTable"></table>
                 </div>
-                <textarea type="text" id="messageBox" class="messageBox" placeholder="Napiš zprávu"></textarea>
+                <textarea type="text" id="messageBox" class="messageBox" onkeypress="enterInput()" placeholder="Napiš zprávu"></textarea>
                 <button id="messageSend" class="messageSend" onclick="sendMess()">Odeslat</button>
+            </div>
+
+            <div id="chatInfoDiv" class="chatInfoDiv">
+                <h2 id="openChatName"></h2><br>
+                <input id="renameChatInp" placeholder="Přejmenovat chat">
+                <button id="renameChatButton" onclick="renameChatButton()">Přejmenovat</button><br><br>
+                <img id="openChatImg" class="infoImg"><br><br>
+                <table id="chatUsersTable"></table><br><br>
+                <input id="addUserInp" placeholder="Přidej uživatele">
+                <table id="searchedUsersTable2" name="searchedUsersTable2"></table>
+            </div>
+
+            <div id="userSettingsScreen" class="userSettingsScreen">
+                <button onclick="userSettingsButtonBack()">Zavřít uživatelské nastavení</button><br><br>
+                <label>uživatel:</label>
+                <h1 id="settName"></h1><br>
+                <img id="settPic" class="infoImg"><br>
+                <p>Změna profilové fotky v aplikaci se projeví až po přenačtení stránky. :( zatím</p>
+                <input type="file" name="file" id="file" accept=".png"><br><br>
+                <button onclick="uploadPicture()" value="Nahrát soubor">Nahrát profilovou fotku</button>
             </div>
         </div>
 
@@ -57,6 +77,7 @@
         <script src="scripts/documentBuilders/searchedUsersBuilder.js"></script>
         <script src="scripts/createChat.js"></script>
         <script src="scripts/timeFunctions.js"></script>
+        <script src="scripts/cookies.js"></script>
         <!--init script-->
         <script src="scripts/start.js"></script>
 

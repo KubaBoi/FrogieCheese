@@ -133,7 +133,7 @@ class MessageController(CheeseController):
             Error.sendCustomError(server, "Message not found", 404)
             return
 
-        if (ChatRepository.belongsToUserId(connectedUser.id, message.id)):
+        if (not ChatRepository.belongsToUserId(connectedUser.id, message.chat_id)):
             CheeseController.sendResponse(server, Error.AccDenied)
             return
 

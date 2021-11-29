@@ -71,6 +71,12 @@ class ChatController(CheeseController):
         chats = ChatRepository.findChatsByIds(ids)
         jsonArray = []
         for chat in chats:
+            chatUsers = ChatTRepository.findAllUsersFromChat(chat.id)
+            users = []
+            for user in chatUsers:
+                users.append(UserRepository.findUserById(user.user_id))
+            
+            chat.chat_users = users
             jsonArray.append(chat.toJson())
         response = CheeseController.createResponse({"CHATS": jsonArray}, 200)
 
@@ -93,29 +99,33 @@ class ChatController(CheeseController):
         connectedUser = auth["user"]
     
         users = []
-        for userId in usersIds:
-            if (ChatRepository.doesChatExists(connectedUser.id, userId) and userId != connectedUser.id):
-                Error.sendCustomError(server, "Chat already exists", 409) # Conflict
-                return
-            
+        userNames = []
+        for userId in usersIds:            
             user = UserRepository.findUserById(userId)
             if (user == None):
                 Error.sendCustomError(server, "User does not exists", 409) # Conflict
                 return
             users.append(user)
+            userNames.append(user.user_name)
 
-        chatName = ""
+        chatName = ", ".join(userNames)
         chatId = ChatRepository.findNewId()
         newChat = Chat(
                 chatId,
                 chatName,
                 AuthenticationController.getTime(),
-                5
+                0
             )
         ChatRepository.save(newChat)
 
         messageId = MessageRepository.findNewId()
-        firstMessage = Message(messageId, connectedUser.id, "Ahoj", chatId, AuthenticationController.getTime())
+        firstMessage = Message(
+            messageId,
+            connectedUser.id, 
+            "Nikdy nikomu neposílej svoje přihlašovací údaje. V případě komunikace s podporou se na tvoje heslo žabičky nikdy ptát nebudou.", 
+            chatId, 
+            AuthenticationController.getTime()
+        )
         MessageRepository.save(firstMessage)
 
         for userId in usersIds:
@@ -128,8 +138,80 @@ class ChatController(CheeseController):
             )
             ChatTRepository.save(newChatT)
 
+        chatUsers = ChatTRepository.findAllUsersFromChat(newChat.id)
+        users = []
+        for user in chatUsers:
+            users.append(UserRepository.findUserById(user.user_id))
+        
+        newChat.chat_users = users
+
         response = CheeseController.createResponse({"CHAT": newChat.toJson()}, 200)
 
+        CheeseController.sendResponse(server, response)
+
+    #@post /addUser
+    @staticmethod
+    def addUser(server, path, auth):
+        if (auth == None):
+            return
+        args = auth["args"]
+
+        # bad json
+        if (not CheeseController.validateJson(["CHAT_ID", "USER_ID"], args)):
+            CheeseController.sendResponse(server, Error.BadJson)
+            return
+
+        # OK
+        chatId = args["CHAT_ID"]
+        userId = args["USER_ID"]
+        connectedUser = auth["user"]
+
+        chat = ChatRepository.findChatById(chatId)
+        if (chat == None):
+            Error.sendCustomError(server, "Chat does not exist", 409) # Conflict
+            return
+
+        usersChatT = ChatTRepository.findChatTByUserIdAndChatId(connectedUser.id, chat.id)
+        chatTid = ChatTRepository.findNewId()
+        chatT = ChatT(chatTid, userId, chat.id, usersChatT.last_delivered_message_id, usersChatT.last_seen_message_id)
+        ChatTRepository.save(chatT)
+
+        chatUsers = ChatTRepository.findAllUsersFromChat(chat.id)
+        users = []
+        for user in chatUsers:
+            users.append(UserRepository.findUserById(user.user_id))
+
+        chat.chat_users = users
+
+        response = CheeseController.createResponse({"CHAT": chat.toJson()}, 200)
+
+        CheeseController.sendResponse(server, response)
+
+    #@post /renameChat
+    @staticmethod
+    def renameChat(server, path, auth):
+        if (auth == None):
+            return
+        args = auth["args"]
+
+        # bad json
+        if (not CheeseController.validateJson(["CHAT_ID", "NAME"], args)):
+            CheeseController.sendResponse(server, Error.BadJson)
+            return
+
+        #OK
+        name = args["NAME"]
+        chatId = args["CHAT_ID"]
+
+        chat = ChatRepository.findChatById(chatId)
+        if (chat == None):
+            Error.sendCustomError(server, "Chat does not exist", 409) # Conflict
+            return
+
+        chat.chat_name = name
+        ChatRepository.update(chat)
+
+        response = CheeseController.createResponse({"CHAT_ID": chatId}, 200)
         CheeseController.sendResponse(server, response)
 
 

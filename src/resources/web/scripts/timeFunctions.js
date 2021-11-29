@@ -25,6 +25,7 @@ async function updateChats() {
 
                     var chatMessages = messages.CHATS[i];
                     var chat = chatsArray[findChatIndexById(chatMessages.CHAT_ID)];
+                    console.log(chatMessages);
                     if (chat.MESSAGES == null) {
                         chat.MESSAGES = chatMessages;
                     }
@@ -37,9 +38,10 @@ async function updateChats() {
                         }
                         chat.MESSAGES.LAST_DELIVERED_MESSAGE_ID = chatMessages.LAST_DELIVERED_MESSAGE_ID;
                         chat.MESSAGES.LAST_SEEN_MESSAGE_ID = chatMessages.LAST_SEEN_MESSAGE_ID;
+                        chat.LAST_ACTIVITY = chat.MESSAGES.MESSAGES[chat.MESSAGES.MESSAGES.length-1].TIME_STAMP;
+                        sortMessages(chat);
                     }
                 }
-                
                 updateChatsTable();
                 showChat(openChat);
             }
@@ -49,6 +51,7 @@ async function updateChats() {
 
 // is called every 1 second
 var oldInput = "";
+var oldInput2 = "";
 async function searchUsers() {
     if (createChatInp.value != "" && oldInput != createChatInp.value) {
         var users = await getUserDynamic(createChatInp.value);
@@ -60,5 +63,17 @@ async function searchUsers() {
     else if (createChatInp.value == "") {
         oldInput = "";
         deleteWholeTable(searchedUsersTable);
+    }
+
+    if (addUserInp.value != "" && oldInput2 != addUserInp.value) {
+        var users = await getUserDynamic(addUserInp.value);
+        if (users.ERROR == null) {
+            showSearchedUsers2(users.USERS);
+        }
+        oldInput2 = addUserInp.value;
+    }
+    else if (addUserInp.value == "") {
+        oldInput = "";
+        deleteWholeTable(searchedUsersTable2);
     }
 }

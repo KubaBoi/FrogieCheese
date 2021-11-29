@@ -14,9 +14,12 @@ class Authorization:
 
     @staticmethod
     def authorize(server, path, method):
+        if (path.startswith("/users/uploadProfilePicture")):
+            return None
+
         args = CheeseController.readArgs(server)
 
-        if (path == "/" or path.endswith(".css") or path.endswith(".js") or path.endswith(".ico") or path.endswith(".jpg")):
+        if (path == "/" or path.endswith(".css") or path.endswith(".js") or path.endswith(".ico") or path.endswith(".jpg") or path.endswith(".png")):
             return None
         elif (path.startswith("/authentication/login")):
             return {"args": args}

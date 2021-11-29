@@ -82,3 +82,21 @@ function getUserDynamic(userNameStart) {
         });  
     });
 }
+
+//endpoint call
+function setUserPicture(userId, picture) {
+    var url = "/users/setUserPicture";
+    var request = JSON.stringify(
+        { 
+            "TOKEN": token,
+            "USER_ID": userId,
+            "PICTURE": picture
+        }
+    );
+    
+    return new Promise(resolve => {
+        sendPost(url, request, debug, function(response){
+            resolve(response);
+        });  
+    });
+}

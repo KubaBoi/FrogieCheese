@@ -1,3 +1,9 @@
+body {
+    color: white;
+    background-color: #2b2b2b;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
 .login {
     position: fixed;
     text-align: center;
@@ -18,14 +24,22 @@
     width: 100%;
     top: 0%;
     left: 150%;
-    background-color: rgb(19, 104, 116);
+    background-color: #2a303b;
+}
+
+.userSettingsScreen {
+    position: fixed;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    top: -100%;
+    background-color: #363636;
 }
 
 .findChatDiv {
     position: absolute;
     height: 0px;
     width: 0px;
-    background-color: greenyellow;
     overflow: hidden;
     display: none;
 }
@@ -34,7 +48,7 @@
     position: absolute;
     width: 20%;
     height: 100%;
-    background-color: red;
+    background-color: #363636;
 }
 
 .chatDiv {
@@ -42,18 +56,27 @@
     width: 80%;
     height: 100%;
     left: 20%;
-    background-color: seagreen;
+    background-color: #2b2b2b;
+}
+
+.chatInfoDiv {
+    text-align: center;
+    position: absolute;
+    width: 20%;
+    height: 100%;
+    left: 80%;
+    background-color: #363636;
 }
 
 #chatsTableDiv {
     position: relative;
-    width: 100%;
+    width: 80%;
     overflow-y: scroll;
 }
 
 #chatTableDiv {
     position: relative;
-    width: 70%;
+    width: 75%;
     height: 95%;
     overflow-y: scroll;
 }
@@ -82,25 +105,27 @@
 }
 
 .seenChat {
-    background-color: steelblue;
+    background-color: #2b2b2b;
 }
 
 .unseenChat {
-    background-color: blueviolet;
+    background-color: #611313;
 }
 
 .myMessage {
     float: right;
     text-align: right;
-    background-color: yellow;
+    background-color: #611313;
     width: fit-content;
     min-height: 30px;
+    padding: 5;
 }
 
 .otherMessage {
-    background-color: green;
+    background-color: #6e2525;
     width: fit-content;
     min-height: 30px;
+    padding: 5;
 }
 
 .userInMessage {
@@ -114,6 +139,11 @@
 .chatPic {
     width: 30px;
     height: 30px;
+}
+
+.infoImg {
+    width: 100px;
+    height: 100px;
 }
 
 .badInput {
@@ -144,4 +174,14 @@
 @keyframes registeredRegisterScreen {
     0% {left: 50%;}
     100% {left: -50%;}
+}
+
+@keyframes userSettingsDown {
+    0% {top: -100%;}
+    100% {top: 0%}
+}
+
+@keyframes userSettingsUp {
+    0% {top: 0%;}
+    100% {top: -100%}
 }

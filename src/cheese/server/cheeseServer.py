@@ -56,6 +56,10 @@ class CheeseServer(BaseHTTPRequestHandler):
                 ChatController.getChatsById(self, self.path, auth)
             elif (self.path == "/chats/createChat"):
                 ChatController.createChat(self, self.path, auth)
+            elif (self.path == "/chats/addUser"):
+                ChatController.addUser(self, self.path, auth)
+            elif (self.path == "/chats/renameChat"):
+                ChatController.renameChat(self, self.path, auth)
             else:
                 CheeseController.sendResponse(self, b"Endpoint not found :(", 404)
         elif (self.path.startswith("/messages")):
@@ -78,6 +82,8 @@ class CheeseServer(BaseHTTPRequestHandler):
                 UserController.update(self, self.path, auth)
             elif (self.path == "/users/getUserDynamic"):
                 UserController.getUserDynamic(self, self.path, auth)
+            elif (self.path == "/users/uploadProfilePicture"):
+                UserController.changeUserPicture(self, self.path, auth)
             else:
                 CheeseController.sendResponse(self, b"Endpoint not found :(", 404)
         else:

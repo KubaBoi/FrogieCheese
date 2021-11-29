@@ -12,6 +12,16 @@ var createChatInp = document.querySelector("#createChatInp");
 var searchedUsersTable = document.querySelector("#searchedUsersTable");
 var chatTableDiv = document.querySelector("#chatTableDiv");
 
+var openChatName = document.querySelector("#openChatName");
+var openChatImg = document.querySelector("#openChatImg");
+var chatUsersTable = document.querySelector("#chatUsersTable");
+var addUserInp = document.querySelector("#addUserInp");
+var searchedUsersTable2 = document.querySelector("#searchedUsersTable2");
+var renameChatInp = document.querySelector("#renameChatInp");
+
+var settName = document.querySelector("#settName");
+var settPic = document.querySelector("#settPic");
+
 var debug = false;
 
 // other

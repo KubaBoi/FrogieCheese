@@ -33,15 +33,50 @@ function getChatsById(ids) {
     });
 }
 
+// endpoint call
+function addUser(chatId, userId) {
+    var url = "/chats/addUser";
+    var request = JSON.stringify(
+        { 
+            "TOKEN": token,
+            "CHAT_ID": chatId,
+            "USER_ID": userId
+        }
+    );
+    
+    return new Promise(resolve => {
+        sendPost(url, request, debug, function(response){
+            resolve(response);
+        });
+    });
+}
+
 
 //endpoint call
 function createChat(chatUsers) {
     var url = "/chats/createChat";
-    console.log(chatUsers);
     var request = JSON.stringify(
         { 
             "TOKEN": token,
             "CHAT_USERS": chatUsers
+        }
+    );
+    
+    return new Promise(resolve => {
+        sendPost(url, request, debug, function(response){
+            resolve(response);
+        });
+    });
+}
+
+//endpoint call
+function renameChat(chatId, name) {
+    var url = "/chats/renameChat";
+    var request = JSON.stringify(
+        { 
+            "TOKEN": token,
+            "CHAT_ID": chatId,
+            "NAME": name
         }
     );
     

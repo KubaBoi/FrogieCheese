@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import io
+import cgi
+import os
+
+from cheese.resourceManager import ResMan
 from cheese.modules.cheeseController import CheeseController
 from cheese.ErrorCodes import Error
 from python.controllers.authenticationController import AuthenticationController
@@ -41,7 +46,7 @@ class UserController(CheeseController):
         userId = UserRepository.findNewId()
         passId = PasswordRepository.findNewId()
 
-        user = User(userId, userName, email, 5)
+        user = User(userId, userName, email, 0)
         UserRepository.save(user)
         passW = Password(passId, userId, password, AuthenticationController.getTime(UserController.PASSWORD_DURATION))
         PasswordRepository.save(passW)
@@ -137,3 +142,39 @@ class UserController(CheeseController):
 
         response = CheeseController.createResponse({"USERS": jsonUsers}, 200)
         CheeseController.sendResponse(server, response)
+
+    #@post /uploadProfilePicture
+    @staticmethod
+    def changeUserPicture(server, path, auth):
+        pictureId, userId = UserController.deal_post_data(server)
+        
+        if (pictureId == None):
+            Error.sendCustomError(server, "Upload failed", 500)
+            return
+
+        user = UserRepository.findUserById(userId)
+        user.picture_id = pictureId
+        UserRepository.update(user)
+
+        response = CheeseController.createResponse({"PICTURE_ID": pictureId}, 200)
+        CheeseController.sendResponse(server, response)        
+
+    @staticmethod
+    def deal_post_data(server):
+        ctype, pdict = cgi.parse_header(server.headers['Content-Type'])
+        pdict['boundary'] = bytes(pdict['boundary'], "utf-8")
+        pdict['CONTENT-LENGTH'] = int(server.headers['Content-Length'])
+        if ctype == 'multipart/form-data':
+            form = cgi.FieldStorage( fp=server.rfile, headers=server.headers, environ={'REQUEST_METHOD':'POST', 'CONTENT_TYPE':server.headers['Content-Type'], })
+            try:
+                for (dirpath, dirnames, filenames) in os.walk(ResMan.web() + "/pictures"):
+                    pictureId = len(filenames)
+
+                if isinstance(form["picture"], list):
+                    for record in form["picture"]:
+                        open(ResMan.web() + f"/pictures/{pictureId}.png", "wb").write(record.file.read())
+                else:
+                    open(ResMan.web() + f"/pictures/{pictureId}.png", "wb").write(form["picture"].file.read())
+            except IOError:
+                    return None
+        return pictureId, int(form["userId"].file.read())

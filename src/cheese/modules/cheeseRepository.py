@@ -269,10 +269,3 @@ class CheeseRepository:
                 newArgs.append(str(arg))
         return newArgs
 
-    """@staticmethod
-    def save(a):
-        print(a)
-
-    @staticmethod 
-    def saveTemp(table, object):
-        Database.commit(f"{table}")"""

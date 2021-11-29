@@ -37,9 +37,13 @@ function addChat(chat) {
 
     for (var i = 0; i < chat.CHAT_USERS.length; i++) {
         var user = chat.CHAT_USERS[i];
-        if (user.ID != connectedUser.ID) {
-            cellContent.innerHTML = "<b>" + user.USER_NAME + "</b> ";
-            cellUserImg.innerHTML = "<img class='chatPic' src='/pictures/" + user.PICTURE_ID + ".jpg'>";
+        if (user.ID != connectedUser.ID && chat.CHAT_USERS.length == 2) {
+            cellContent.innerHTML = "<b>" + chat.CHAT_NAME + "</b> ";
+            cellUserImg.innerHTML = "<img class='chatPic' src='/pictures/" + user.PICTURE_ID + ".png'>";
+        }
+        else if (user.ID != connectedUser.ID) {
+            cellContent.innerHTML = "<b>" + chat.CHAT_NAME + "</b> ";
+            cellUserImg.innerHTML = "<img class='chatPic' src='/pictures/" + chat.PICTURE_ID + ".png'>";
         }
     }
     cellUserImg.setAttribute("class", "userInMessage");
