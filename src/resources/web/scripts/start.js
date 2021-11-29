@@ -32,7 +32,7 @@ async function loginButton() {
 
                 showChat(chatIds[0]);
                 loadChats();
-                //window.setInterval(updateChats, 1000);
+                window.setInterval(updateChats, 1000);
                 window.setInterval(searchUsers, 1000);
             }
         }
