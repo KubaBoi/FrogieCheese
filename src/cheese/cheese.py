@@ -50,14 +50,14 @@ class Cheese:
     # start server
     @staticmethod
     def serveForever():
-        Logger.info(time.asctime(), f"Server Starts - {Settings.host}:{Settings.port}")
+        Logger.info(f"Server Starts - {Settings.host}:{Settings.port}")
         try:
             Cheese.server.serve_forever()
         except KeyboardInterrupt:
             pass
         except Exception as e:
             Logger.fail(str(e))
-        Logger.info(time.asctime(), f"Server Stops - {Settings.host}:{Settings.port}")
+        Logger.info(f"Server Stops - {Settings.host}:{Settings.port}")
 
     # init print
     @staticmethod
