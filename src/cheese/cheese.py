@@ -62,6 +62,7 @@ class Cheese:
     # init print
     @staticmethod
     def printInit():
+        Logger.info(10*"=")
         with open(f"{ResMan.cheese()}/initString.txt", "r") as f:
             print(f.read())
 
