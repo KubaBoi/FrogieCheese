@@ -20,52 +20,65 @@ class Logger:
     @staticmethod
     def info(message):
         header = Logger.__getMethod()
+        Logger.writeInFile(header + message)
         x = threading.Thread(target=Logger.__infoPrint, args=(message,header,))
         x.start()
 
     @staticmethod
     def okBlue(message):
         header = Logger.__getMethod()
+        Logger.writeInFile(header + message)
         x = threading.Thread(target=Logger.__okBluePrint, args=(message,header,))
         x.start()
 
     @staticmethod
     def okCyan(message):
         header = Logger.__getMethod()
+        Logger.writeInFile(header + message)
         x = threading.Thread(target=Logger.__okCyanPrint, args=(message,header,))
         x.start()
 
     @staticmethod
     def okGreen(message):
         header = Logger.__getMethod()
+        Logger.writeInFile(header + message)
         x = threading.Thread(target=Logger.__okGreenPrint, args=(message,header,))
         x.start()
 
     @staticmethod
     def warning(message):
         header = Logger.__getMethod()
+        Logger.writeInFile(header + message)
         x = threading.Thread(target=Logger.__warningPrint, args=(message,header,))
         x.start()
 
     @staticmethod
     def fail(message):
         header = Logger.__getMethod()
+        Logger.writeInFile(header + message)
         x = threading.Thread(target=Logger.__failPrint, args=(message,header,))
         x.start()
 
     @staticmethod
     def bold(message):
         header = Logger.__getMethod()
+        Logger.writeInFile(header + message)
         x = threading.Thread(target=Logger.__boldPrint, args=(message,header,))
         x.start()
 
     @staticmethod
     def underline(message):
         header = Logger.__getMethod()
+        Logger.writeInFile(header + message)
         x = threading.Thread(target=Logger.__underlinePrint, args=(message,header,))
         x.start()
 
     #PRIVATE METHODS
+
+    @staticmethod
+    def writeInFile(log):
+        with open(ResMan.cheese() + "/log.txt", "a") as f:
+            f.write(log + "\n")
 
     @staticmethod
     def __getMethod():

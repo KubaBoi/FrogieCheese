@@ -54,6 +54,7 @@ sudo nano /etc/rc.local:
 sudo chmod a+x /etc/rc.local
 
 #cloud
+ssh root@94.176.182.223
 sudo apt install libpq-dev python3-dev
 pip install psycopg2-binary
 pip install psycopg2
