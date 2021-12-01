@@ -87,36 +87,36 @@ class Logger:
         classFile = ResMan.getFileName(calframe[3].filename)
         function = calframe[3].function
         date = datetime.now()
-        return Logger.BOLD + date.strftime("%H:%M:%S") + f" - {classFile}->{function}: {Logger.ENDC}"
+        return date.strftime("%H:%M:%S") + f" - {classFile}->{function}: "
 
     @staticmethod
     def __infoPrint(message, header):
-        print(header + message)
+        print(Logger.BOLD + header + Logger.ENDC + message)
 
     @staticmethod
     def __okBluePrint(message, header):
-        print(header + Logger.OKBLUE + message + Logger.ENDC)
+        print(Logger.BOLD + header + Logger.ENDC  + Logger.OKBLUE + message + Logger.ENDC)
 
     @staticmethod
     def __okCyanPrint(message, header):
-        print(header + Logger.OKCYAN + message + Logger.ENDC)
+        print(Logger.BOLD + header + Logger.ENDC  + Logger.OKCYAN + message + Logger.ENDC)
 
     @staticmethod
     def __okGreenPrint(message, header):
-        print(header + Logger.OKGREEN + message + Logger.ENDC)
+        print(Logger.BOLD + header + Logger.ENDC  + Logger.OKGREEN + message + Logger.ENDC)
 
     @staticmethod
     def __warningPrint(message, header):
-        print(header + Logger.WARNING + message + Logger.ENDC)
+        print(Logger.BOLD + header + Logger.ENDC  + Logger.WARNING + message + Logger.ENDC)
 
     @staticmethod
     def __failPrint(message, header):
-        print(header + Logger.FAIL + message + Logger.ENDC)
+        print(Logger.BOLD + header + Logger.ENDC  + Logger.FAIL + message + Logger.ENDC)
 
     @staticmethod
     def __boldPrint(message, header):
-        print(header + Logger.BOLD + message + Logger.ENDC)
+        print(Logger.BOLD + header + Logger.ENDC  + Logger.BOLD + message + Logger.ENDC)
 
     @staticmethod
     def __underlinePrint(message, header):
-        print(header + Logger.UNDERLINE + message + Logger.ENDC)
+        print(Logger.BOLD + header + Logger.ENDC  + Logger.UNDERLINE + message + Logger.ENDC)
