@@ -1,0 +1,4 @@
+pri prichozi zprave se neposune chat dolu (i pri zoobrazeni chatu)
+zarovnani dlouhych zprav se zarovna doprava
+posilat obrazky
+timestampy
