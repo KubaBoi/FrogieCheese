@@ -5,6 +5,7 @@ import time
 from pathlib import Path
 
 from http.server import HTTPServer
+from cheese.Logger import Logger
 
 from cheese.resourceManager import ResMan
 from cheese.appSettings import Settings
@@ -49,14 +50,14 @@ class Cheese:
     # start server
     @staticmethod
     def serveForever():
-        print(time.asctime(), f"Server Starts - {Settings.host}:{Settings.port}")
+        Logger.info(time.asctime(), f"Server Starts - {Settings.host}:{Settings.port}")
         try:
             Cheese.server.serve_forever()
         except KeyboardInterrupt:
             pass
         except Exception as e:
-            print(e)
-        print(time.asctime(), f"Server Stops - {Settings.host}:{Settings.port}")
+            Logger.fail(str(e))
+        Logger.info(time.asctime(), f"Server Stops - {Settings.host}:{Settings.port}")
 
     # init print
     @staticmethod
