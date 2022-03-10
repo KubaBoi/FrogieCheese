@@ -7,7 +7,7 @@ class ResMan:
 
     @staticmethod
     def setPath(path):
-        ResMan.path = path
+        ResMan.path = str(path)
 
     # return name of file from path
     @staticmethod
