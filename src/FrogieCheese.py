@@ -17,7 +17,11 @@ main file of Cheese Application
 if __name__ == "__main__":
     Cheese.init()
 
-    time.sleep(5)
-    requests.post(f"http://localhost/services/doYouKnowMe?name=Frogie&icon=android-chrome-192x192.png&port={Settings.port}&color=FFFFFF", data='{"TOKEN":"serviceToken"}')
+    while True:
+        try:
+            requests.post(f"http://localhost/services/doYouKnowMe?name=Frogie&icon=android-chrome-192x192.png&port={Settings.port}&color=FFFFFF", data='{"TOKEN":"serviceToken"}')
+            break
+        except:
+            time.sleep(1)
 
     Cheese.serveForever()
