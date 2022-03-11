@@ -9,17 +9,18 @@ async function autoLogin() {
     if (getCookie("token") != "") {
         response = await authorizeToken();
         if (response.ERROR == null) {
-            logged();
-
+            token = getCookie("token");
             if (getCookie("user") != "") {
                 connectedUser = getCookie("user");
             }
             else {
                 response = await getUserByToken();
                 if (response.ERROR == null) {
+                    connectedUser = response.USER;
                     setCookie("user", response.USER, 5);
                 }
             }
+            logged();
 
             setCookie("token", getCookie("token"), 5);
             setCookie("user", connectedUser, 5);
