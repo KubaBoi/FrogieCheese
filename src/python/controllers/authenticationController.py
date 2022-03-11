@@ -71,6 +71,13 @@ class AuthenticationController(CheeseController):
 
         CheeseController.sendResponse(server, response)
 
+    #@post /authorizeToken
+    @staticmethod
+    def authorizeToken(server, path, auth):
+        if (auth != None):
+            AuthenticationController.updateToken(auth["ip"], auth["token"])
+            response = CheeseController.createResponse({"OK": "OK"}, 200)
+            CheeseController.sendResponse(server, response)
 
 
     #METHODS

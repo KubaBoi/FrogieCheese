@@ -71,6 +71,8 @@ class CheeseHandler(BaseHTTPRequestHandler):
                     AuthenticationController.login(self, self.path, auth)
                 elif (self.path.startswith("/authentication/getUserByToken")):
                     AuthenticationController.getUserByToken(self, self.path, auth)
+                elif (self.path.startswith("/authentication/authorizeToken")):
+                    AuthenticationController.authorizeToken(self, self.path, auth)
                 else:
                     Error.sendCustomError(self, "Endpoint not found :(", 404)
             elif (self.path.startswith("/chats")):

@@ -1,43 +1,78 @@
+autoLogin();
+async function autoLogin() {
+    console.log
+    if (getCookie("username") != "") 
+        document.querySelector("#fname").value = getCookie("username");
+    if (getCookie("password") != "") 
+        document.querySelector("#fpass").value = getCookie("password");
+
+    if (getCookie("token") != "") {
+        response = await authorizeToken();
+        if (response.ERROR == null) {
+            logged();
+
+            if (getCookie("user") != "") {
+                connectedUser = getCookie("user");
+            }
+            else {
+                response = await getUserByToken();
+                if (response.ERROR == null) {
+                    setCookie("user", response.USER, 5);
+                }
+            }
+
+            setCookie("token", getCookie("token"), 5);
+            setCookie("user", connectedUser, 5);
+        }
+    }
+}
+
 async function loginButton() {
     loginResponse = await login();
     if (loginResponse.ERROR == null) {
         setCookie("username", document.getElementById("fname").value, 5);
         setCookie("password", document.getElementById("fpass").value, 5);
+        setCookie("token", loginResponse.TOKEN, 5);
+        setCookie("user", loginResponse.USER, 5);
 
         connectedUser = loginResponse.USER;
         token = loginResponse.TOKEN;
 
-        settName.innerHTML = connectedUser.USER_NAME;
-        settPic.setAttribute("src", "/pictures/" + connectedUser.PICTURE_ID + ".png")
-
-        document.querySelector("#loggedAs").innerHTML = connectedUser.USER_NAME; //debug
-        document.querySelector("#loggedAsImg").setAttribute("src", "/pictures/" + connectedUser.PICTURE_ID + ".png")
-        
-        chatsArray = await getChats(0);
-        if (chatsArray.ERROR == null) { 
-            chatsArray = chatsArray.CHATS;
-            chatIds = [];
-            for (var i = 0; i < chatsArray.length; i++) {
-                chatIds.push(chatsArray[i].ID);
-            }
-
-            var chatMessages = await getChatMessages(0, chatIds);
-            if (chatMessages.ERROR == null) {
-                for (var ci = 0; ci < chatMessages.CHATS.length; ci++) {
-                    var chat = chatMessages.CHATS[ci];
-                    var chatInArray = chatsArray[findChatIndexById(chat.CHAT_ID)];
-
-                    chatInArray.MESSAGES = chat;
-                }
-
-                showChat(chatIds[0]);
-                loadChats();
-                window.setInterval(updateChats, 1000);
-                window.setInterval(searchUsers, 1000);
-            }
-        }
+        logged();
     }
 }
+
+async function logged() {
+    settName.innerHTML = connectedUser.USER_NAME;
+    settPic.setAttribute("src", "/pictures/" + connectedUser.PICTURE_ID + ".png")
+
+    document.querySelector("#loggedAs").innerHTML = connectedUser.USER_NAME; //debug
+    document.querySelector("#loggedAsImg").setAttribute("src", "/pictures/" + connectedUser.PICTURE_ID + ".png")
+    
+    chatsArray = await getChats(0);
+    if (chatsArray.ERROR == null) { 
+        chatsArray = chatsArray.CHATS;
+        chatIds = [];
+        for (var i = 0; i < chatsArray.length; i++) {
+            chatIds.push(chatsArray[i].ID);
+        }
+
+        var chatMessages = await getChatMessages(0, chatIds);
+        if (chatMessages.ERROR == null) {
+            for (var ci = 0; ci < chatMessages.CHATS.length; ci++) {
+                var chat = chatMessages.CHATS[ci];
+                var chatInArray = chatsArray[findChatIndexById(chat.CHAT_ID)];
+
+                chatInArray.MESSAGES = chat;
+            }
+
+            showChat(chatIds[0]);
+            loadChats();
+            window.setInterval(updateChats, 1000);
+            window.setInterval(searchUsers, 1000);
+        }
+    }
+} 
 
 function enterInput() {
     var key = window.event.keyCode;
