@@ -8,6 +8,8 @@ function sendPost(url, jsonRequest, output, callback) {
         if (this.readyState == 4) {
             json = JSON.parse(this.responseText);
             if(output) console.log("RESPONSE", date.getTime(), url, json);
+            if (this.status == 401 && json.ERROR == "Unable to authorize with this token")
+                location = "http://" + location.hostname;
             if(callback) callback(json);
         }
     };

@@ -38,6 +38,9 @@ class CheeseHandler(BaseHTTPRequestHandler):
         try:
             path = CheeseController.getPath(self.path)
             auth = Authorization.authorize(self, path, "GET")
+            if (auth == -1): 
+                CheeseController.sendResponse(self, Error.BadToken)
+                return
 
             if (path == "/"):
                 CheeseController.serveFile(self, "index.html")
@@ -59,6 +62,9 @@ class CheeseHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         try:
             auth = Authorization.authorize(self, self.path, "POST")
+            if (auth == -1): 
+                CheeseController.sendResponse(self, Error.BadToken)
+                return
 
             if (self.path.startswith("/authentication")):
                 if (self.path.startswith("/authentication/login")):

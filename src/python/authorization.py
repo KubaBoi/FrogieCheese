@@ -18,6 +18,7 @@ class Authorization:
             return None
 
         args = CheeseController.readArgs(server)
+        pathArgs = CheeseController.getArgs(server.path)
 
         if (path == "/" or path.endswith(".css") or path.endswith(".js") or path.endswith(".ico") or path.endswith(".jpg") or path.endswith(".png")):
             return None
@@ -33,11 +34,11 @@ class Authorization:
                     "user": UserRepository.findUserByIpAndToken(ip, token),
                     "token": token,
                     "ip": ip,
-                    "args": args
+                    "args": args,
+                    "pathArgs": pathArgs
                 }
             
-            CheeseController.sendResponse(server, Error.BadToken)
-            return None
+            return -1
 
 
     @staticmethod
