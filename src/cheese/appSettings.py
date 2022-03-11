@@ -28,3 +28,4 @@ class Settings:
             Settings.dbPort = settings["dbPort"]
             Settings.canCommit = settings["canCommit"]
             Settings.multiThreading = settings["multiThreading"]
+            Settings.allowCORS = settings["allowCORS"]

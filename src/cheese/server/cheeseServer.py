@@ -5,6 +5,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from socketserver import ThreadingMixIn
 import threading
 
+from cheese.appSettings import Settings
 from cheese.modules.cheeseController import CheeseController
 from cheese.Logger import Logger
 from cheese.ErrorCodes import Error
@@ -31,6 +32,9 @@ class CheeseServer(HTTPServer):
 
 class CheeseHandler(BaseHTTPRequestHandler):
     def do_GET(self):
+        if (self.path == "/alive"):
+            CheeseController.sendResponse(self, CheeseController.createResponse({"RESPONSE": "Yes"}, 200))
+            return
         try:
             path = CheeseController.getPath(self.path)
             auth = Authorization.authorize(self, path, "GET")
@@ -106,3 +110,8 @@ class CheeseHandler(BaseHTTPRequestHandler):
         except Exception as e:
             Logger.fail(str(e))
             Error.sendCustomError(self, "Internal server error :(", 500)
+
+    def end_headers(self):
+        if (Settings.allowCORS):
+            self.send_header('Access-Control-Allow-Origin', '*')
+            BaseHTTPRequestHandler.end_headers(self)
