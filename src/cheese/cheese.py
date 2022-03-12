@@ -35,7 +35,8 @@ class Cheese:
         Settings.loadSettings()
 
         # connect to database
-        Database.connect()
+        if (Settings.allowDB):
+            Database.connect()
 
         #initialization of repositories
         CheeseRepository.initRepositories()
@@ -46,7 +47,7 @@ class Cheese:
     # initialization application server
     @staticmethod
     def initServer():
-        if (Settings.multiThreading):
+        if (Settings.allowMultiThreading):
             Cheese.server = CheeseServerMulti((Settings.host, Settings.port), CheeseHandler)
         else:
             Cheese.server = CheeseServer((Settings.host, Settings.port), CheeseHandler)

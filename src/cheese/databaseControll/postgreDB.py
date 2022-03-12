@@ -46,7 +46,7 @@ class PostgreDB:
 
     # insert, update ...
     def commit(self, sql):
-        if (Settings.canCommit):
+        if (Settings.allowCommit):
             self.cursor = self.connection.cursor()
             Logger.okBlue(Logger.WARNING + "COMMIT: " + Logger.ENDC + sql)
             try:
