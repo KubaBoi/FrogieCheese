@@ -96,7 +96,7 @@ class Logger:
         s = s.replace(Logger.ENDC, "")
         s = s.replace(Logger.BOLD, "")
         s = s.replace(Logger.UNDERLINE, "")
-        with open(ResMan.joinPath(ResMan.root(), "log.txt"), "a") as f:
+        with open(ResMan.joinPath(ResMan.root(), "log.log"), "a") as f:
             f.write(s + "\n")
 
     @staticmethod
