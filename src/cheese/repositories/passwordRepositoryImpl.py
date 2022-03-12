@@ -105,3 +105,15 @@ class PasswordRepositoryImpl:
             Logger.fail(str(e))
             return False
 
+    @staticmethod
+    def delete(args):
+        obj = PasswordRepositoryImpl.fromModel(args[0])
+
+        try:
+            Database.commit(f"delete from {PasswordRepositoryImpl.table} where id={obj[0]};")
+            Database.done()
+            return True
+        except Exception as e:
+            Logger.fail(str(e))
+            return False
+
