@@ -73,7 +73,7 @@ class CheeseController:
             post_body = server.rfile.read(content_len).decode("utf-8")
             return json.loads(post_body)
         except:
-            return []
+            return {}
 
     # send file
     @staticmethod
