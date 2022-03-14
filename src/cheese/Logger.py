@@ -68,10 +68,10 @@ class Logger:
         rootLogger = logging.getLogger()
 
         date = datetime.now()
-        fileHandler = logging.FileHandler(ResMan.joinPath(ResMan.logs(), f"log{date.strftime('%Y-%m-%d-%H-%M-%S')}.log"), mode="w")
-        fileHandler.setFormatter(logFormatter)
-        fileHandler.addFilter(FileFilter())
-        rootLogger.addHandler(fileHandler)
+        #fileHandler = logging.FileHandler(ResMan.joinPath(ResMan.logs(), f"log{date.strftime('%Y-%m-%d-%H-%M-%S')}.log"), mode="w")
+        #fileHandler.setFormatter(logFormatter)
+        #fileHandler.addFilter(FileFilter())
+        #rootLogger.addHandler(fileHandler)
 
         htmlHandler = logging.FileHandler(ResMan.joinPath(ResMan.logs(), f"log{date.strftime('%Y-%m-%d-%H-%M-%S')}.html"), mode="a")
         htmlHandler.setFormatter(htmlFormatter)
