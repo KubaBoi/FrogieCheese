@@ -179,7 +179,7 @@ class Logger:
                 i += 1
                 if (not name.endswith(".html")): continue
                 table += f"<tr><td>{name}</td>"
-                if (i == 2):
+                if (i == 1):
                     table += f"<td><button onclick=\"location='/admin/logs/{name}'\">Connect to active console</button></td>"
                     table += f"<td class='okGreen'>ACTIVE</td>"
                 else:
@@ -209,7 +209,7 @@ class Logger:
         with open(f"{ResMan.cheese()}/admin/activeLog.html", "r") as temp:
             logName = ResMan.getFileName(log)
             for root, dirs, files in os.walk(ResMan.logs()):
-                if (files[-2] == logName):
+                if (reversed(files)[0] == logName):
                     data = temp.read()
                 else:
                     with open(f"{log}", "r") as f:
