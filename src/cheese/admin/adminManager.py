@@ -75,7 +75,7 @@ class AdminManager:
     @staticmethod
     def __getActiveLog(server):
         for root, dirs, files in os.walk(ResMan.logs()):
-            activeLog = files[-2]
+            activeLog = files[-1]
         
         log = ResMan.joinPath(ResMan.logs(), activeLog)
         with open(f"{log}", "r") as f:
