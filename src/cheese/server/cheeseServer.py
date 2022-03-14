@@ -33,7 +33,7 @@ class CheeseServer(HTTPServer):
 
 class CheeseHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if (self.path.startswith("/logs")):
+        if (self.path.startswith("/logs") and Settings.allowLogReader):
             CheeseController.sendResponse(self, Logger.serveLogs(self), "text/html")
             return
         self.__log()
