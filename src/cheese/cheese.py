@@ -25,18 +25,28 @@ class Cheese:
         ResMan.setPath(Path(__file__).parent.parent.parent)
         Cheese.printInit()
 
+        # loads application settings
+        Settings.loadSettings()
+
+        #init logger
+        Logger.initLogger()
+
         # log new line
-        Logger.info(2*"\n" + 10*"=" + f"Start in file {ResMan.path}" + 10*"=")
+        Logger.info(10*"=" + f"Start in file {ResMan.path}" + 10*"=" + "\n", False, False)
 
         # init errors
         Error.init()
 
-        # loads application settings
-        Settings.loadSettings()
-
         # connect to database
+        Logger.warning("Initializing database connection...", silence=False)
         if (Settings.allowDB):
-            Database.connect()
+            try:
+                db = Database()
+                db.connect()
+                db.close()
+                Logger.okBlue(f"CONNECTED TO {Settings.dbHost}:{Settings.dbPort} {Settings.dbName}", silence=False)
+            except Exception as e:
+                Logger.fail(f"CONNECTION TO {Settings.dbHost}:{Settings.dbPort} {Settings.dbName} CANNOT BE DONE:{Logger.WARNING}\n{str(e)}", silence=False)
 
         #initialization of repositories
         CheeseRepository.initRepositories()
@@ -55,14 +65,14 @@ class Cheese:
     # start server
     @staticmethod
     def serveForever():
-        Logger.info(f"Server Starts - {Settings.host}:{Settings.port}")
+        Logger.info(f"Server Starts - {Settings.host}:{Settings.port}", silence=False)
         try:
             Cheese.server.serve_forever()
         except KeyboardInterrupt:
             pass
         except Exception as e:
-            Logger.fail(e)
-        Logger.info(f"Server Stops - {Settings.host}:{Settings.port}")
+            Logger.fail("UNKNOWN ERROR WHILE RUNNING SERVER", e)
+        Logger.info(f"Server Stops - {Settings.host}:{Settings.port}", silence=False)
 
     # init print
     @staticmethod

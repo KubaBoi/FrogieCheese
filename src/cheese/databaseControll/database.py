@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from sqlite3 import connect
+import time
+
 from cheese.appSettings import Settings
 from cheese.Logger import Logger
 from cheese.databaseControll.postgreDB import PostgreDB
@@ -14,47 +17,45 @@ database connection of Cheese Application
 
 class Database:
 
-    connected = False
+    def __init__(self):
+        pass
 
     # connect to database
-    @staticmethod
-    def connect():
+    def connect(self):
         if (Settings.dbDriver == "postgres"):
-            Database.db = PostgreDB()
+            self.db = PostgreDB()
         else:
-            Database.db = SQLServerDB()
+            self.db = SQLServerDB()
 
-        Database.db.connect()
+        connected = False
+        while not connected:
+            try:
+                self.db.connect()
+                connected = True
+            except:
+                Logger.warning("Too many clients connected to database, waiting for one second")
+                time.sleep(1)
 
     # close connection with database
-    @staticmethod
-    def close():
-        Database.db.close()
+    def close(self):
+        self.db.close()
     
     # select query
-    @staticmethod
-    def query(sql):
-        while (Database.connected): pass
-        Database.connected = True
-        Database.connect()
-        ret = Database.db.query(sql)
-        Database.connected = False
+    def query(self, sql):
+        self.connect()
+        ret = self.db.query(sql)
+        self.close()
         return ret
 
     # insert, update ...
-    @staticmethod
-    def commit(sql):
-        while (Database.connected): pass
-        Database.connected = True
-        Database.connect()
-        Database.db.commit(sql)
-        Database.connected = False
+    def commit(self, sql):
+        self.connect()
+        self.db.commit(sql)
 
     # commit when done
-    @staticmethod
-    def done():
-        Database.db.done()
+    def done(self):
+        self.db.done()
+        self.close()
 
-    @staticmethod
-    def rollback():
-        Database.db.rollback()
+    def rollback(self):
+        self.db.rollback()

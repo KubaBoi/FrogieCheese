@@ -59,8 +59,9 @@ class PasswordRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select case when exists (select * from passwords p where p.user_id = {userId}) then cast(1 as bit) else cast(0 as bit) end;")
-            Database.done()
+            db = Database()
+            response = db.query(f"select case when exists (select * from passwords p where p.user_id = {userId}) then cast(1 as bit) else cast(0 as bit) end;")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -73,8 +74,9 @@ class PasswordRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select count(*) from passwords;")
-            Database.done()
+            db = Database()
+            response = db.query(f"select count(*) from passwords;")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -86,8 +88,9 @@ class PasswordRepositoryImpl:
         obj = PasswordRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"insert into {PasswordRepositoryImpl.table} {PasswordRepositoryImpl.scheme} values {obj};")
-            Database.done()
+            db = Database()
+            db.commit(f"insert into {PasswordRepositoryImpl.table} {PasswordRepositoryImpl.scheme} values {obj};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -98,8 +101,9 @@ class PasswordRepositoryImpl:
         obj = PasswordRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"update {PasswordRepositoryImpl.table} set {PasswordRepositoryImpl.scheme} = {obj} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"update {PasswordRepositoryImpl.table} set {PasswordRepositoryImpl.scheme} = {obj} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -110,8 +114,9 @@ class PasswordRepositoryImpl:
         obj = PasswordRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"delete from {PasswordRepositoryImpl.table} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"delete from {PasswordRepositoryImpl.table} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))

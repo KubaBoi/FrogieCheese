@@ -62,8 +62,9 @@ class ChatTRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select {ChatTRepositoryImpl.schemeNoBrackets} from chats_t ct where ct.user_id = {userId} and ct.chat_id = {chatId};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select {ChatTRepositoryImpl.schemeNoBrackets} from chats_t ct where ct.user_id = {userId} and ct.chat_id = {chatId};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -78,8 +79,9 @@ class ChatTRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select {ChatTRepositoryImpl.schemeNoBrackets} from chats_t ct where ct.user_id = {userId};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select {ChatTRepositoryImpl.schemeNoBrackets} from chats_t ct where ct.user_id = {userId};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -95,8 +97,9 @@ class ChatTRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select ct.id, ct.user_id, ct.chat_id, ct.last_delivered_message_id, ct.last_seen_message_id from chats_t ct where ct.user_id = {userId} and (ct.last_delivered_message_id is NULL or exists (select ct2.id from chats_t ct2 inner join messages m on m.id = ct2.last_delivered_message_id where ct2.user_id = {userId} and exists (select m2.id from messages m2 where m2.time_stamp > m.time_stamp and m2.chat_id = ct2.chat_id)));")
-            Database.done()
+            db = Database()
+            response = db.query(f"select ct.id, ct.user_id, ct.chat_id, ct.last_delivered_message_id, ct.last_seen_message_id from chats_t ct where ct.user_id = {userId} and (ct.last_delivered_message_id is NULL or exists (select ct2.id from chats_t ct2 inner join messages m on m.id = ct2.last_delivered_message_id where ct2.user_id = {userId} and exists (select m2.id from messages m2 where m2.time_stamp > m.time_stamp and m2.chat_id = ct2.chat_id)));")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -111,8 +114,9 @@ class ChatTRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select count(*) from chats_t;")
-            Database.done()
+            db = Database()
+            response = db.query(f"select count(*) from chats_t;")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -125,8 +129,9 @@ class ChatTRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select {ChatTRepositoryImpl.schemeNoBrackets} from chats_t ct where ct.chat_id = {chatId};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select {ChatTRepositoryImpl.schemeNoBrackets} from chats_t ct where ct.chat_id = {chatId};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -141,8 +146,9 @@ class ChatTRepositoryImpl:
         obj = ChatTRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"insert into {ChatTRepositoryImpl.table} {ChatTRepositoryImpl.scheme} values {obj};")
-            Database.done()
+            db = Database()
+            db.commit(f"insert into {ChatTRepositoryImpl.table} {ChatTRepositoryImpl.scheme} values {obj};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -153,8 +159,9 @@ class ChatTRepositoryImpl:
         obj = ChatTRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"update {ChatTRepositoryImpl.table} set {ChatTRepositoryImpl.scheme} = {obj} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"update {ChatTRepositoryImpl.table} set {ChatTRepositoryImpl.scheme} = {obj} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -165,8 +172,9 @@ class ChatTRepositoryImpl:
         obj = ChatTRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"delete from {ChatTRepositoryImpl.table} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"delete from {ChatTRepositoryImpl.table} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))

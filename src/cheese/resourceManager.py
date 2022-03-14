@@ -69,6 +69,11 @@ class ResMan:
     def resources():
         return f"{ResMan.src()}/resources"
 
+    # logs
+    @staticmethod
+    def logs():
+        return f"{ResMan.root()}/logs"
+
     # tests
     @staticmethod
     def tests():

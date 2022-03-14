@@ -63,8 +63,9 @@ class TokenRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select {TokenRepositoryImpl.schemeNoBrackets} from tokens t where t.user_id = {userId} and t.ip = {ip} and t.end_time >= {time};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select {TokenRepositoryImpl.schemeNoBrackets} from tokens t where t.user_id = {userId} and t.ip = {ip} and t.end_time >= {time};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -81,8 +82,9 @@ class TokenRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select {TokenRepositoryImpl.schemeNoBrackets} from tokens t where t.token = {token} and t.ip = {ip} and t.end_time >= {time};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select {TokenRepositoryImpl.schemeNoBrackets} from tokens t where t.token = {token} and t.ip = {ip} and t.end_time >= {time};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -97,8 +99,9 @@ class TokenRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select case when exists (select * from tokens t where t.token = {token}) then cast(0 as bit) else cast(1 as bit) end;")
-            Database.done()
+            db = Database()
+            response = db.query(f"select case when exists (select * from tokens t where t.token = {token}) then cast(0 as bit) else cast(1 as bit) end;")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -114,8 +117,9 @@ class TokenRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select case when exists (select * from tokens t where t.token = {token} and t.ip = {ip} and t.end_time >= {time}) then cast(1 as bit) else cast(0 as bit) end;")
-            Database.done()
+            db = Database()
+            response = db.query(f"select case when exists (select * from tokens t where t.token = {token} and t.ip = {ip} and t.end_time >= {time}) then cast(1 as bit) else cast(0 as bit) end;")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -128,8 +132,9 @@ class TokenRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select count(*) from tokens;")
-            Database.done()
+            db = Database()
+            response = db.query(f"select count(*) from tokens;")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -141,8 +146,9 @@ class TokenRepositoryImpl:
         obj = TokenRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"insert into {TokenRepositoryImpl.table} {TokenRepositoryImpl.scheme} values {obj};")
-            Database.done()
+            db = Database()
+            db.commit(f"insert into {TokenRepositoryImpl.table} {TokenRepositoryImpl.scheme} values {obj};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -153,8 +159,9 @@ class TokenRepositoryImpl:
         obj = TokenRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"update {TokenRepositoryImpl.table} set {TokenRepositoryImpl.scheme} = {obj} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"update {TokenRepositoryImpl.table} set {TokenRepositoryImpl.scheme} = {obj} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -165,8 +172,9 @@ class TokenRepositoryImpl:
         obj = TokenRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"delete from {TokenRepositoryImpl.table} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"delete from {TokenRepositoryImpl.table} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))

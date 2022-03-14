@@ -61,8 +61,9 @@ class UserRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select u.id, u.user_name, u.email, u.picture_id from passwords p inner join users u on u.id = p.user_id where p.password = {password} and p.duration > {duration} and u.user_name = {userName};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select u.id, u.user_name, u.email, u.picture_id from passwords p inner join users u on u.id = p.user_id where p.password = {password} and p.duration > {duration} and u.user_name = {userName};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -77,8 +78,9 @@ class UserRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where u.user_name = {userName};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where u.user_name = {userName};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -93,8 +95,9 @@ class UserRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where u.id = {userId};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where u.id = {userId};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -109,8 +112,9 @@ class UserRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select case when exists (select * from users u where u.user_name = {userName}) then cast(0 as bit) else cast(1 as bit) end;")
-            Database.done()
+            db = Database()
+            response = db.query(f"select case when exists (select * from users u where u.user_name = {userName}) then cast(0 as bit) else cast(1 as bit) end;")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -123,8 +127,9 @@ class UserRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select count(*) from users;")
-            Database.done()
+            db = Database()
+            response = db.query(f"select count(*) from users;")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -138,8 +143,9 @@ class UserRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select u.id, u.user_name, u.email, u.picture_id from users u inner join tokens t on t.user_id = u.id where t.token = {token} and t.ip = {ip};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select u.id, u.user_name, u.email, u.picture_id from users u inner join tokens t on t.user_id = u.id where t.token = {token} and t.ip = {ip};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -154,8 +160,9 @@ class UserRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where LOWER(u.user_name) like {userNameStart}")
-            Database.done()
+            db = Database()
+            response = db.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where LOWER(u.user_name) like {userNameStart}")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -170,8 +177,9 @@ class UserRepositoryImpl:
         obj = UserRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"insert into {UserRepositoryImpl.table} {UserRepositoryImpl.scheme} values {obj};")
-            Database.done()
+            db = Database()
+            db.commit(f"insert into {UserRepositoryImpl.table} {UserRepositoryImpl.scheme} values {obj};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -182,8 +190,9 @@ class UserRepositoryImpl:
         obj = UserRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"update {UserRepositoryImpl.table} set {UserRepositoryImpl.scheme} = {obj} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"update {UserRepositoryImpl.table} set {UserRepositoryImpl.scheme} = {obj} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -194,8 +203,9 @@ class UserRepositoryImpl:
         obj = UserRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"delete from {UserRepositoryImpl.table} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"delete from {UserRepositoryImpl.table} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))

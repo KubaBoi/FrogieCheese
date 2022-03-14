@@ -24,17 +24,14 @@ class PostgreDB:
                 port=Settings.dbPort)
 
         self.cursor = self.connection.cursor()
-        Logger.okBlue(f"CONNECTED TO {Settings.dbHost}:{Settings.dbPort} {Settings.dbName}")
 
     # close connection with database
     def close(self):
         self.cursor.close()
-        Logger.okBlue(f"CONNECTION TO {Settings.dbHost}:{Settings.dbPort} {Settings.dbName} CLOSED")
 
     # select query
     def query(self, sql):
-        self.cursor = self.connection.cursor()
-        Logger.okBlue(Logger.WARNING + "QUERY: " + Logger.ENDC + sql)
+        Logger.okCyan(Logger.WARNING + "QUERY: " + Logger.ENDC + Logger.OKCYAN + sql)
         try:
             self.cursor.execute(sql)
         except:
@@ -47,8 +44,7 @@ class PostgreDB:
     # insert, update ...
     def commit(self, sql):
         if (Settings.allowCommit):
-            self.cursor = self.connection.cursor()
-            Logger.okBlue(Logger.WARNING + "COMMIT: " + Logger.ENDC + sql)
+            Logger.okBlue(Logger.WARNING + "COMMIT: " + Logger.ENDC + Logger.OKBLUE + sql)
             try:
                 self.cursor.execute(sql)
             except:

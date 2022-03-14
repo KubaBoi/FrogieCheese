@@ -13,20 +13,24 @@ class that stores Cheese Application settings
 
 class Settings:
 
+    settings = {}
+
     # load settings
     @staticmethod 
     def loadSettings():
         with open(f"{ResMan.root()}/appSettings.json", "r") as f:
-            settings = json.loads(f.read())
-            Settings.host = settings["host"]
-            Settings.port = settings["port"]
-            Settings.dbDriver = settings["dbDriver"]
-            Settings.dbHost = settings["dbHost"]
-            Settings.dbName = settings["dbName"]
-            Settings.dbUser = settings["dbUser"]
-            Settings.dbPassword = settings["dbPassword"]
-            Settings.dbPort = settings["dbPort"]
-            Settings.allowCommit = settings["allowCommit"]
-            Settings.allowMultiThreading = settings["allowMultiThreading"]
-            Settings.allowCORS = settings["allowCORS"]
-            Settings.allowDB = settings["allowDB"]
+            Settings.settings = json.loads(f.read())
+            Settings.host = Settings.settings["host"]
+            Settings.port = Settings.settings["port"]
+            Settings.dbDriver = Settings.settings["dbDriver"]
+            Settings.dbHost = Settings.settings["dbHost"]
+            Settings.dbName = Settings.settings["dbName"]
+            Settings.dbUser = Settings.settings["dbUser"]
+            Settings.dbPassword = Settings.settings["dbPassword"]
+            Settings.dbPort = Settings.settings["dbPort"]
+            Settings.allowDebug = Settings.settings["allowDebug"]
+            Settings.allowCommit = Settings.settings["allowCommit"]
+            Settings.allowMultiThreading = Settings.settings["allowMultiThreading"]
+            Settings.allowCORS = Settings.settings["allowCORS"]
+            Settings.allowDB = Settings.settings["allowDB"]
+            Settings.allowLogReader = Settings.settings["allowLogReader"]

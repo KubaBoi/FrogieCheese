@@ -23,17 +23,14 @@ class SQLServerDB:
                       f"PWD={Settings.dbPassword};"
                       f"Trusted_Connection=yes;")
 
-        #self.cursor = self.connection.cursor()
-        Logger.okBlue(f"CONNECTED TO {Settings.dbHost}:{Settings.dbPort} {Settings.dbName}")
+        self.cursor = self.connection.cursor()
 
     # close connection with database
     def close(self):
         self.cursor.close()
-        Logger.okBlue(f"CONNECTION TO {Settings.dbHost}:{Settings.dbPort} {Settings.dbName} CLOSED")
 
     # select query
     def query(self, sql):
-        self.cursor = self.connection.cursor()
         Logger.okBlue(Logger.WARNING + "QUERY: " + Logger.ENDC + sql)
         try:
             self.cursor.execute(sql)
@@ -48,7 +45,6 @@ class SQLServerDB:
     # insert, update ...
     def commit(self, sql):
         if (Settings.allowCommit):
-            self.cursor = self.connection.cursor()
             Logger.okBlue(Logger.WARNING + "COMMIT: " + Logger.ENDC + sql)
             try:
                 self.cursor.execute(sql)

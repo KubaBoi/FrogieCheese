@@ -63,8 +63,9 @@ class MessageRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select distinct m.id, author_id, content, m.chat_id, m.time_stamp from messages m inner join chats c on c.id = m.chat_id inner join chats_t ct on ct.chat_id = c.id inner join users u on u.id = ct.user_id where c.id = {chatId} and m.time_stamp <= {timeStamp} order by m.time_stamp desc limit {messagesCount};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select distinct m.id, author_id, content, m.chat_id, m.time_stamp from messages m inner join chats c on c.id = m.chat_id inner join chats_t ct on ct.chat_id = c.id inner join users u on u.id = ct.user_id where c.id = {chatId} and m.time_stamp <= {timeStamp} order by m.time_stamp desc limit {messagesCount};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -79,8 +80,9 @@ class MessageRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select count(*) from messages;")
-            Database.done()
+            db = Database()
+            response = db.query(f"select count(*) from messages;")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -93,8 +95,9 @@ class MessageRepositoryImpl:
 
         response = None
         try:
-            response = Database.query(f"select {MessageRepositoryImpl.schemeNoBrackets} from messages m where m.id = {messageId};")
-            Database.done()
+            db = Database()
+            response = db.query(f"select {MessageRepositoryImpl.schemeNoBrackets} from messages m where m.id = {messageId};")
+            db.done()
         except Exception as e:
             Logger.fail(str(e))
 
@@ -108,8 +111,9 @@ class MessageRepositoryImpl:
         obj = MessageRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"insert into {MessageRepositoryImpl.table} {MessageRepositoryImpl.scheme} values {obj};")
-            Database.done()
+            db = Database()
+            db.commit(f"insert into {MessageRepositoryImpl.table} {MessageRepositoryImpl.scheme} values {obj};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -120,8 +124,9 @@ class MessageRepositoryImpl:
         obj = MessageRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"update {MessageRepositoryImpl.table} set {MessageRepositoryImpl.scheme} = {obj} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"update {MessageRepositoryImpl.table} set {MessageRepositoryImpl.scheme} = {obj} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
@@ -132,8 +137,9 @@ class MessageRepositoryImpl:
         obj = MessageRepositoryImpl.fromModel(args[0])
 
         try:
-            Database.commit(f"delete from {MessageRepositoryImpl.table} where id={obj[0]};")
-            Database.done()
+            db = Database()
+            db.commit(f"delete from {MessageRepositoryImpl.table} where id={obj[0]};")
+            db.done()
             return True
         except Exception as e:
             Logger.fail(str(e))
