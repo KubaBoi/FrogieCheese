@@ -175,7 +175,7 @@ class Logger:
             
             table = "<tr><th>Log name</th><th>Redirect</th><th>Status</th><th>Last logged</th><th>Size</th>"
             i = 0
-            for name in reversed(files):
+            for name in reversed(sorted(files)):
                 i += 1
                 if (not name.endswith(".html")): continue
                 table += f"<tr><td>{name}</td>"
@@ -210,7 +210,7 @@ class Logger:
         with open(f"{ResMan.cheese()}/admin/activeLog.html", "r") as temp:
             logName = ResMan.getFileName(log)
             for root, dirs, files in os.walk(ResMan.logs()):
-                if (reversed(files)[0] == logName):
+                if (sorted(files)[-1] == logName):
                     data = temp.read()
                 else:
                     with open(f"{log}", "r") as f:
