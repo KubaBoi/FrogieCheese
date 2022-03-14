@@ -191,6 +191,7 @@ class Logger:
                 table += f"<td>{ResMan.convertBytes(os.path.getsize(ResMan.logs() + '/' + name))}</td></tr>"
 
             data = data.replace("TABLE", table)
+            return (bytes(data, "utf-8"), 200)
 
     @staticmethod
     def serveLogs(server):
