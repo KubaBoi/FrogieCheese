@@ -5,6 +5,7 @@ from urllib.parse import unquote
 import os
 import json
 import time
+from http.cookies import SimpleCookie
 
 from cheese.resourceManager import ResMan
 from cheese.Logger import Logger
@@ -74,6 +75,31 @@ class CheeseController:
             return json.loads(post_body)
         except:
             return {}
+
+    # return cookie dictionary
+    @staticmethod
+    def getCookies(server):
+        cookieRaw = ""
+        for header in server.headers._headers:
+            if (header[0] == "Cookie"):
+                cookieRaw = ":".join(header)
+
+        cookieRaw = list(cookieRaw)
+        for i in range(len(cookieRaw)):
+            if (cookieRaw[i] == "="):
+                while (cookieRaw[i] != ";"):
+                    if (cookieRaw[i] == " "): cookieRaw[i] = "_" 
+                    i += 1
+                    if (i >= len(cookieRaw)): break
+        
+        cookieRaw = "".join(cookieRaw)
+        cookie = SimpleCookie()
+        cookie.load(cookieRaw)
+        
+        cookies = {}
+        for key, morsel in cookie.items():
+            cookies[key] = morsel.value
+        return cookies
 
     # send file
     @staticmethod

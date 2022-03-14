@@ -1,0 +1,26 @@
+<html lang="cs">
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/admin/styles/style.css">
+    <link rel="icon" href="/admin/web/favicon.ico" type="image/x-icon">
+    <title>CHAdmin</title>
+</head>
+<body>
+    <h1>Giga CHAdmin</h1>
+    <table id="settingsTable"></table>
+    <label id="logDesc"></label><br><br>
+    <div id="log" class="logDiv">
+        <table id="logTable" class="logTable"></table>
+    </div>
+
+    <script src="http://frogie.cz/scripts/public/cookies.js"></script>
+    <script src="http://frogie.cz/scripts/public/communication.js"></script>
+    <script src="admin/scripts/settings.js"></script>
+    <script src="admin/scripts/log.js"></script>
+    <script>
+        buildSettingTable();
+        buildLogTable();
+    </script>
+</body>
+</html>

@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import math
 
 class ResMan:
 
@@ -88,3 +89,14 @@ class ResMan:
     @staticmethod
     def error():
         return f"{ResMan.web()}/errors"
+
+    # # convert bytes
+    @staticmethod
+    def convertBytes(bytes):
+        if bytes == 0:
+            return "0B"
+        size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+        i = int(math.floor(math.log(bytes, 1024)))
+        p = math.pow(1024, i)
+        s = round(bytes / p, 2)
+        return "%s %s" % (s, size_name[i])

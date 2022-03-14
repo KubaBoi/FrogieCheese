@@ -1,0 +1,62 @@
+body {
+    color: white;
+    background-color: #2b2b2b;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+a{color:#4542fc;}
+a:visited{color:#9c2b2b;}
+
+.header { font-weight: bold; }
+.okBlue { color: #4542fc; }
+.okCyan { color: #0ff; }
+.okGreen { color: #0f0; }
+.warning { color: #ff0; }
+.fail { color: #f00; }
+.bold { font-weight: bold; }
+.underLine { text-decoration: underline; }
+
+.logDiv {
+    position: fixed;
+    width: 50%;
+    right: 0%;
+    top: 5%;
+    height: 94%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    background-color: black;
+    border: 2px solid #fff;
+}
+
+.logDivBig {
+    position: fixed;
+    width: 100%;
+    left: 0%;
+    top: 9%;
+    height: 90%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    background-color: black;
+    border: 2px solid #fff;
+}
+
+.logTable {
+    word-wrap: break-word;
+    word-break: break-all;
+    table-layout: fixed;
+}
+
+#logDesc {
+    position: fixed;
+    width: 50%;
+    right: 0%;
+    top: 15px;
+}
+
+td {
+    min-width: 180px;
+    vertical-align: top;
+    text-align: left;
+}

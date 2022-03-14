@@ -1,0 +1,23 @@
+<html lang="cs">
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/admin/styles/style.css">
+    <link rel="icon" href="/admin/web/favicon.ico" type="image/x-icon">
+    <title>Cheese log</title>
+</head>
+<body>
+    <button onclick="location='/admin/logs'">All logs</button>
+    <button onclick="location='/admin'">CHAdmin</button>
+    <h1 id="logDesc">Cheese log - </h1>
+    <div id="log" class="logDivBig">
+        <table id="logTable" class="logTable"></table>
+    </div>
+
+    <script>//dontRunScript = true;</script>
+    <script src="/admin/scripts/log.js"></script>
+    <script src="http://frogie.cz/scripts/public/cookies.js"></script>
+    <script src="http://frogie.cz/scripts/public/communication.js"></script>
+</body>
+</html>

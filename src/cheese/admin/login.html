@@ -1,0 +1,22 @@
+<html lang="cs">
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Giga CHADmin</title>
+</head>
+<body>
+    <script src="http://frogie.cz/scripts/public/cookies.js"></script>
+    <script>
+        var redirect = "/admin"
+        loginFunction();
+        function loginFunction() {
+            var user = prompt("Login as admin:", "");
+            var pass = prompt("Password:", "")
+            
+            setCookie("adminName", user, 0.01);
+            setCookie("adminPass", pass, 0.01);
+
+            window.location = redirect;
+        }
+    </script>
+</body>

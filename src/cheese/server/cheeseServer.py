@@ -8,6 +8,7 @@ from socketserver import ThreadingMixIn
 
 from cheese.appSettings import Settings
 from cheese.modules.cheeseController import CheeseController
+from cheese.admin.adminManager import AdminManager
 from cheese.Logger import Logger
 from cheese.ErrorCodes import Error
 from python.authorization import Authorization
@@ -33,8 +34,8 @@ class CheeseServer(HTTPServer):
 
 class CheeseHandler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if (self.path.startswith("/logs") and Settings.allowLogReader):
-            CheeseController.sendResponse(self, Logger.serveLogs(self), "text/html")
+        if (self.path.startswith("/admin")):
+            AdminManager.controller(self)
             return
         self.__log()
         if (self.path == "/alive"):

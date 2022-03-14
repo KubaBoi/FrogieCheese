@@ -26,15 +26,15 @@ class FileFilter(logging.Filter):
 class HtmlFilter(logging.Filter):
     def filter(self, rec):
         if (rec.levelno == logging.HTML_FILE):
-            rec.msg = rec.msg.replace(Logger.HEADER, "<label style='font-weight:bold;'>")
-            rec.msg = rec.msg.replace(Logger.OKBLUE, "<label style='color:#4542fc;'>")
-            rec.msg = rec.msg.replace(Logger.OKCYAN, "<label style='color:#0ff;'>")
-            rec.msg = rec.msg.replace(Logger.OKGREEN, "<label style='color:#0f0;'>")
-            rec.msg = rec.msg.replace(Logger.WARNING, "<label style='color:#ff0;'>")
-            rec.msg = rec.msg.replace(Logger.FAIL, "<label style='color:#f00;'>")
+            rec.msg = rec.msg.replace(Logger.HEADER, "<label class='header'>")
+            rec.msg = rec.msg.replace(Logger.OKBLUE, "<label class='okBlue'>")
+            rec.msg = rec.msg.replace(Logger.OKCYAN, "<label class='okCyan'>")
+            rec.msg = rec.msg.replace(Logger.OKGREEN, "<label class='okGreen'>")
+            rec.msg = rec.msg.replace(Logger.WARNING, "<label class='warning'>")
+            rec.msg = rec.msg.replace(Logger.FAIL, "<label class='fail'>")
             rec.msg = rec.msg.replace(Logger.ENDC, "</label>")
-            rec.msg = rec.msg.replace(Logger.BOLD, "<label style='font-weight:bold;'>")
-            rec.msg = rec.msg.replace(Logger.UNDERLINE, "<label style='text-decoration:underline;'>")
+            rec.msg = rec.msg.replace(Logger.BOLD, "<label class='bold'>")
+            rec.msg = rec.msg.replace(Logger.UNDERLINE, "<label class='underLine'>")
             return True
         return False
 
@@ -61,7 +61,7 @@ class Logger:
         Logger.__addLoggingLevel("CONSOLE", 9)
 
         logFormatter = logging.Formatter(fmt="%(asctime)s - %(message)s", datefmt="%H:%M:%S")
-        htmlFormatter = logging.Formatter(fmt="<tr><td>%(asctime)s</td><td>%(message)s</td></tr>", datefmt="%H:%M:%S")
+        htmlFormatter = logging.Formatter(fmt="<tr><td>%(asctime)s</td><td>%(message)s</td></tr>", datefmt="%Y-%m-%d %H:%M:%S")
         rootLogger = logging.getLogger()
 
         date = datetime.now()
@@ -81,18 +81,6 @@ class Logger:
         rootLogger.addHandler(consoleHandler)
 
         rootLogger.setLevel(logging.CONSOLE)
-
-        with open(ResMan.joinPath(ResMan.logs(), f"log{date.strftime('%Y-%m-%d-%H-%M-%S')}.html"), "a") as f:
-            f.write("<!DOCTYPE html>\n<html style='scroll-behavior:smooth;'>\n<head>\n<title>Cheese Logs</title>\n<meta charset='utf-8'>\n")
-            f.write("<link rel='icon' href='data:;base64,iVBORw0KGgo='>\n")
-            f.write("</head><body style='color:#fff;background-color:#2b2b2b;font-family: Arial, Helvetica, sans-serif;'>\n")
-            f.write("<div style='position:fixed;right:50px;top:5px;'>");
-            f.write("<input type='checkbox' id='aS' checked><lable>Autoscroll</label><br>")
-            f.write("<input type='checkbox' id='aR' checked><lable>Autoreload</label></div>")
-            f.write("<script src='/logs/logJSscript.js'></script>")
-            f.write("<script>run();</script>")
-            f.write(f"<h1>Cheese log - {date.strftime('%Y-%m-%d-%H-%M-%S')}</h1>\n")
-            f.write("<table style='margin-bottom:100px;'>\n")
 
     
     @staticmethod
@@ -179,34 +167,54 @@ class Logger:
     @staticmethod
     def listLogs():
         for root, dirs, files in os.walk(ResMan.logs()):
-            response = "<!DOCTYPE html>\n<html>\n<head>\n<title>Cheese Logs</title>\n<meta charset='utf-8'>"
-            response += "<style>a{color:#4542fc;} a:visited{color:red;}</style></head>\n"
-            response += "<body style='color:#fff;background-color:#2b2b2b;font-family: Arial, Helvetica, sans-serif;'>"
-            response += "<h1>Cheese Logs</h1><table>"
-            for name in files:
-                if (not name.endswith(".log")): continue
-                response += f"<tr><td><a href='/logs/{name.replace('.log', '.html')}'>"
-                response += f"{name.replace('.log', '.html')}</a></td>"
-                response += f"<td>{os.path.getsize(ResMan.joinPath(ResMan.logs(), name))}</td></tr>"
-            response += "</table></body></html>"
-        return (bytes(response, "utf-8"), 200)
+            with open(f"{ResMan.cheese()}/admin/allLogs.html", "r") as temp:
+                data = temp.read()
+            
+            table = "<tr><th>Log name</th><th>Redirect</th><th>Status</th><th>Last logged</th><th>Size</th>"
+            i = 0
+            for name in reversed(files):
+                i += 1
+                if (not name.endswith(".html")): continue
+                table += f"<tr><td>{name}</td>"
+                if (i == 2):
+                    table += f"<td><button onclick=\"location='/admin/logs/{name}'\">Connect to active console</button></td>"
+                    table += f"<td class='okGreen'>ACTIVE</td>"
+                else:
+                    table += f"<td><button onclick=\"location='/admin/logs/{name}'\">Show log</button></td>"
+                    table += f"<td class='fail'>CLOSED</td>"
+                with open(f"{ResMan.logs()}/{name}", "r") as log:
+                    lastLogged = log.readlines()[-1].split("</td>")[0].replace("<tr><td>", "")
+                table += f"<td>{lastLogged}</td>"
+                table += f"<td>{ResMan.convertBytes(os.path.getsize(ResMan.logs() + '/' + name))}</td></tr>"
+
+            data = data.replace("TABLE", table)
 
     @staticmethod
     def serveLogs(server):
         path = server.path
-        if (path == "/logs" or path == "/logs/"):
+        if (path == "/admin/logs" or path == "/admin/logs/"):
             logging.file(f"listing log files: {server.client_address[0]}")
             return Logger.listLogs()
 
-        log = ResMan.joinPath(ResMan.root(), path)
+        log = ResMan.joinPath(ResMan.root(), path.replace("/admin", ""))
         logging.file(f"Serving log file: {server.client_address[0]} \"{server.path}\"")
         
         if (not os.path.exists(f"{log}")):
             with open(f"{ResMan.error()}/error404.html", "rb") as f:
                 return (f.read(), 404)
 
-        with open(f"{log}", "rb") as f:
-            return (f.read(), 200)
+        with open(f"{ResMan.cheese()}/admin/activeLog.html", "r") as temp:
+            logName = ResMan.getFileName(log)
+            for root, dirs, files in os.walk(ResMan.logs()):
+                if (files[-2] == logName):
+                    data = temp.read()
+                else:
+                    with open(f"{log}", "r") as f:
+                        data = temp.read()
+                        data = data.replace('class="logTable">', 'class="logTable">' + f.read())
+                        data = data.replace("Cheese log - ", "Cheese log - " + logName.replace(".html", ""))
+                        data = data.replace("//dontRunScript", "dontRunScript");
+        return (bytes(data, "utf-8"), 200)
                 
 
     #PRIVATE METHODS
