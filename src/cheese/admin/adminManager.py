@@ -28,17 +28,23 @@ class AdminManager:
         elif (server.path.startswith("/admin/logs")):
             AdminManager.__showLogs(server)
             return 
-        elif (server.path == "/admin/getSettings"):
-            AdminManager.__getSettings(server)
+        elif (server.path.startswith("/admin/deleteLog")):
+            AdminManager.__deleteLog(server)
             return
         elif (server.path == "/admin/getActiveLog"):
             AdminManager.__getActiveLog(server)
+            return
+        elif (server.path == "/admin/getSettings"):
+            AdminManager.__getSettings(server)
             return
         elif (server.path == "/admin/restart"):
             AdminManager.__restartServer(server)
             return
         elif (server.path == "/admin/shutdown"):
             AdminManager.__shutDown(server)
+            return
+        elif (server.path == "/admin/changeConfiguration"):
+            AdminManager.__changeConfig(server)
             return
         AdminManager.__sendFile(server, server.path)        
         
@@ -77,9 +83,26 @@ class AdminManager:
         CheeseController.sendResponse(server, Logger.serveLogs(server), "text/html")
 
     @staticmethod
-    def __getSettings(server):
-        js = Settings.loadJson()
-        CheeseController.sendResponse(server, (bytes(json.dumps(js), "utf-8"), 200), "text/html")
+    def __deleteLog(server):
+        args = CheeseController.getArgs(server.path)
+        if (not CheeseController.validateJson(["log"], args)):
+            CheeseController.sendResponse(server, Error.BadJson)
+            return
+
+        log = args["log"]
+        path = f"{ResMan.logs()}/{log}"
+        if (not os.path.exists(path)):
+            CheeseController.sendResponse(server, Error.FileNotFound)
+            return
+
+        try:
+            os.remove(path)
+            response = CheeseController.createResponse({"RESPONSE": "OK"}, 200)
+            CheeseController.sendResponse(server, response)
+        except Exception as e:
+            Logger.fail("Error while removing log", e, silence=False)
+            Error.sendCustomError(server, "File was not deleted", 500)
+
 
     @staticmethod
     def __getActiveLog(server):
@@ -94,6 +117,11 @@ class AdminManager:
             onlyTable = "".join(lines[min:(min+1000)])
         response = CheeseController.createResponse({"RESPONSE": {"LOG_DESC": activeLog, "LOG": onlyTable}}, 200)
         CheeseController.sendResponse(server, response, "text/html")
+
+    @staticmethod
+    def __getSettings(server):
+        js = Settings.loadJson()
+        CheeseController.sendResponse(server, (bytes(json.dumps(js), "utf-8"), 200), "text/html")
 
     @staticmethod
     def __restartServer(server):
@@ -116,4 +144,8 @@ class AdminManager:
         Logger.warning("Shut down will start in 5 seconds", header=False, silence=False)
         time.sleep(5)
         server.server.socket.close()
+
+    @staticmethod
+    def __changeConfig(server):
+        pass
         

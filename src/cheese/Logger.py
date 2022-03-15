@@ -197,7 +197,9 @@ class Logger:
                 with open(f"{ResMan.logs()}/{name}", "r") as log:
                     lastLogged = log.readlines()[-1].split("</td>")[0].replace("<tr><td>", "")
                 table += f"<td>{lastLogged}</td>"
-                table += f"<td>{ResMan.convertBytes(os.path.getsize(ResMan.logs() + '/' + name))}</td></tr>"
+                table += f"<td>{ResMan.convertBytes(os.path.getsize(ResMan.logs() + '/' + name))}</td>"
+                if (i != 1):
+                    table += f"<td><button onclick=\"deleteFile('{name}')\">Remove log</button></td></tr>"
 
             data = data.replace("TABLE", table)
             return (bytes(data, "utf-8"), 200)
