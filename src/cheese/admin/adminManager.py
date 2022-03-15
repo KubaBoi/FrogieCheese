@@ -1,6 +1,9 @@
 
 import os
 import json
+import time
+import sys
+import subprocess
 
 from cheese.modules.cheeseController import CheeseController
 from cheese.Logger import Logger
@@ -30,6 +33,12 @@ class AdminManager:
             return
         elif (server.path == "/admin/getActiveLog"):
             AdminManager.__getActiveLog(server)
+            return
+        elif (server.path == "/admin/restart"):
+            AdminManager.__restartServer(server)
+            return
+        elif (server.path == "/admin/shutdown"):
+            AdminManager.__shutDown(server)
             return
         AdminManager.__sendFile(server, server.path)        
         
@@ -86,4 +95,25 @@ class AdminManager:
         response = CheeseController.createResponse({"RESPONSE": {"LOG_DESC": activeLog, "LOG": onlyTable}}, 200)
         CheeseController.sendResponse(server, response, "text/html")
 
+    @staticmethod
+    def __restartServer(server):
+        Logger.warning(20*"=")
+        Logger.warning("REQUEST FOR SERVER RESTART SUCCESSFULLY RECIEVED", silence=False)
+        Logger.warning("Restart will start in 5 seconds", silence=False)
+        time.sleep(5)
+        for root, dirs, files in os.walk(ResMan.src()):
+            server.server.socket.close()
+            time.sleep(5)
+            if (os.name == "nt"):
+                subprocess.call(f"{sys.executable} \"{ResMan.joinPath(ResMan.src(), files[0])}\"")
+            else:
+                subprocess.call(f"{sys.executable} \"{ResMan.joinPath(ResMan.src(), files[0])}\"", shell=True)
+
+    @staticmethod
+    def __shutDown(server):
+        Logger.warning(20*"=")
+        Logger.warning("REQUEST FOR SERVER SHUT DOWN SUCCESSFULLY RECIEVED", header=False, silence=False)
+        Logger.warning("Shut down will start in 5 seconds", header=False, silence=False)
+        time.sleep(5)
+        server.server.socket.close()
         

@@ -1,4 +1,5 @@
 import inspect
+from logging import handlers
 import os
 import logging
 
@@ -54,6 +55,8 @@ class Logger:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
+    handlers = []
+
     @staticmethod
     def initLogger():
         if (not os.path.exists(f"{ResMan.logs()}")):
@@ -72,11 +75,13 @@ class Logger:
         #fileHandler.setFormatter(logFormatter)
         #fileHandler.addFilter(FileFilter())
         #rootLogger.addHandler(fileHandler)
+        #Logger.handlers.append(fileHandler)
 
         htmlHandler = logging.FileHandler(ResMan.joinPath(ResMan.logs(), f"log{date.strftime('%Y-%m-%d-%H-%M-%S')}.html"), mode="a")
         htmlHandler.setFormatter(htmlFormatter)
         htmlHandler.addFilter(HtmlFilter())
         rootLogger.addHandler(htmlHandler)
+        Logger.handlers.append(htmlHandler)
 
         consoleHandler = logging.StreamHandler()
         consoleHandler.setFormatter(logFormatter)
@@ -85,6 +90,10 @@ class Logger:
 
         rootLogger.setLevel(logging.CONSOLE)
 
+    @staticmethod
+    def close():
+        for handler in Logger.handlers:
+            handler.close()
     
     @staticmethod
     def info(message, allowHeader=True, silence=True):

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import time
+import sys
 from pathlib import Path
 
 from cheese.resourceManager import ResMan
@@ -70,9 +70,12 @@ class Cheese:
             Cheese.server.serve_forever()
         except KeyboardInterrupt:
             pass
+        except OSError:
+            Logger.warning("SHUTING SERVER DOWN")
         except Exception as e:
             Logger.fail("UNKNOWN ERROR WHILE RUNNING SERVER", e)
         Logger.info(f"Server Stops - {Settings.host}:{Settings.port}", silence=False)
+        sys.exit()
 
     # init print
     @staticmethod
