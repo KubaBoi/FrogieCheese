@@ -20,6 +20,8 @@ class Settings:
     @staticmethod 
     def loadSettings():
         Settings.settings = Settings.loadJson()
+        Settings.name = Settings.settings["name"]
+        Settings.version = Settings.settings["version"]
         Settings.host = Settings.settings["host"]
         Settings.port = Settings.settings["port"]
         Settings.dbDriver = Settings.settings["dbDriver"]

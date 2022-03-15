@@ -60,3 +60,7 @@ td {
     vertical-align: top;
     text-align: left;
 }
+
+.controlDiv {
+    padding: 10px;
+}

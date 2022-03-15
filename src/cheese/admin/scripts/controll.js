@@ -6,16 +6,42 @@ function apiFunction(url) {
     });
 }
 
-async function restart() {
-    clearInterval(updateInterval);
-    apiFunction("/admin/restart");
-    setTimeout(buildLogTable, 500);
-    setTimeout(prepareRestart, 5000);
-    setTimeout(checkLife, 15000);
+function restart() {
+    if (confirm("Do you really want to restart your application?\nIt will took about 20 seconds.")) {
+        clearInterval(updateInterval);
+        document.getElementById("restartButt").disabled = true;
+        apiFunction("/admin/restart");
+        textInterval = setInterval(function() { loadingText("Waiting for response from server"); }, 200);
+        setTimeout(buildTableWithDelay, 500);
+    }
+}
+
+async function buildTableWithDelay() {
+    response = await getActiveLog();
+    if (!response.ERROR) {
+        if (response.RESPONSE.LOG.endsWith("<label class='warning'>Restart will start in 5 seconds</label></td></tr>\n")) {
+            clearInterval(textInterval);
+            buildLogTable();
+            setTimeout(prepareRestart, 5000);
+            setTimeout(checkLife, 15000);
+        }
+        else {
+            setTimeout(buildTableWithDelay, 500);
+        }
+    }
 }
 
 function prepareRestart() {
-    document.querySelector("#logTable").innerHTML = "Server is restarting...";
+    textInterval = setInterval(function() { loadingText("Server is restarting"); }, 200);
+}
+var dots = 0;
+function loadingText(text) {
+    for (let i = 0; i < dots; i++) {
+        text += ".";
+    }
+    dots += 1;
+    if (dots >= 10) dots = 0;
+    document.querySelector("#logTable").innerHTML = text;
 }
 
 async function checkLife() {
@@ -23,6 +49,9 @@ async function checkLife() {
     .then(
         (response) => {
             updateInterval = setInterval(update, 1000);
+            clearInterval(textInterval);
+            document.getElementById("restartButt").disabled = false;
+            alert("Server has been restarted :)");
         },
         (err) => {
             setTimeout(checkLife, 500);
