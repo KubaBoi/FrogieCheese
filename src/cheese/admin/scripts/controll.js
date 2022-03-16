@@ -19,7 +19,7 @@ function restart() {
 async function buildTableWithDelay() {
     response = await getActiveLog();
     if (!response.ERROR) {
-        if (response.RESPONSE.LOG.endsWith("<label class='warning'>Restart will start in 5 seconds</label></td></tr>\n")) {
+        if (response.RESPONSE.LOG.includes("<label class='warning'>Restart will start in 5 seconds</label></td></tr>\n")) {
             clearInterval(textInterval);
             buildLogTable();
             setTimeout(prepareRestart, 5000);
