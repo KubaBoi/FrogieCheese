@@ -21,13 +21,12 @@ async function buildTableWithDelay() {
     if (!response.ERROR) {
         if (response.RESPONSE.LOG.includes("<label class='warning'>Restart will start in 5 seconds</label></td></tr>\n")) {
             clearInterval(textInterval);
-            buildLogTable();
 
             element = document.getElementById("log");
             var b = element.scrollHeight - element.clientHeight;
             element.scrollTop = b;
             
-            setTimeout(prepareRestart, 5000);
+            prepareRestart();
             setTimeout(checkLife, 15000);
         }
         else {

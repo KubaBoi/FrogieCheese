@@ -46,7 +46,7 @@ function update() {
     element = document.getElementById("log");
     var a = element.scrollTop;
     var b = element.scrollHeight - element.clientHeight;
-    if (oldC < 500 && oldScrollHeight < element.scrollHeight) {
+    if (oldC < 500 && oldScrollHeight != element.scrollHeight) {
         element.scrollTop = b;
     }
 
