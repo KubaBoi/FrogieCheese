@@ -17,10 +17,10 @@ class UserRepositoryImpl:
 
     @staticmethod
     def convert(var):
-        try:
+        if (type(var) is int):
             var = int(var)
-        except:
-            var = var
+        elif (type(var) is float):
+            var = float(var)
         return var
 
     @staticmethod
