@@ -44,7 +44,6 @@ class Database:
     def query(self, sql):
         self.connect()
         ret = self.db.query(sql)
-        self.close()
         return ret
 
     # insert, update ...

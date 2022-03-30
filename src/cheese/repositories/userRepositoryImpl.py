@@ -65,7 +65,7 @@ class UserRepositoryImpl:
             response = db.query(f"select u.id, u.user_name, u.email, u.picture_id from passwords p inner join users u on u.id = p.user_id where p.password = {password} and p.duration > {duration} and u.user_name = {userName};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (len(response) > 0):
@@ -82,7 +82,7 @@ class UserRepositoryImpl:
             response = db.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where u.user_name = {userName};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (len(response) > 0):
@@ -99,7 +99,7 @@ class UserRepositoryImpl:
             response = db.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where u.id = {userId};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (len(response) > 0):
@@ -116,7 +116,7 @@ class UserRepositoryImpl:
             response = db.query(f"select case when exists (select * from users u where u.user_name = {userName}) then cast(0 as bit) else cast(1 as bit) end;")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (response[0][0] == "1"): return True
@@ -131,7 +131,7 @@ class UserRepositoryImpl:
             response = db.query(f"select count(*) from users;")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         return int(response[0][0])
@@ -147,7 +147,7 @@ class UserRepositoryImpl:
             response = db.query(f"select u.id, u.user_name, u.email, u.picture_id from users u inner join tokens t on t.user_id = u.id where t.token = {token} and t.ip = {ip};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (len(response) > 0):
@@ -164,7 +164,7 @@ class UserRepositoryImpl:
             response = db.query(f"select {UserRepositoryImpl.schemeNoBrackets} from users u where LOWER(u.user_name) like {userNameStart}")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         resp = []
@@ -182,7 +182,7 @@ class UserRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -195,7 +195,7 @@ class UserRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -208,6 +208,6 @@ class UserRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 

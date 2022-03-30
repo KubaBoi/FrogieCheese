@@ -66,7 +66,7 @@ class ChatTRepositoryImpl:
             response = db.query(f"select {ChatTRepositoryImpl.schemeNoBrackets} from chats_t ct where ct.user_id = {userId} and ct.chat_id = {chatId};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (len(response) > 0):
@@ -83,7 +83,7 @@ class ChatTRepositoryImpl:
             response = db.query(f"select {ChatTRepositoryImpl.schemeNoBrackets} from chats_t ct where ct.user_id = {userId};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         resp = []
@@ -101,7 +101,7 @@ class ChatTRepositoryImpl:
             response = db.query(f"select ct.id, ct.user_id, ct.chat_id, ct.last_delivered_message_id, ct.last_seen_message_id from chats_t ct where ct.user_id = {userId} and (ct.last_delivered_message_id is NULL or exists (select ct2.id from chats_t ct2 inner join messages m on m.id = ct2.last_delivered_message_id where ct2.user_id = {userId} and exists (select m2.id from messages m2 where m2.time_stamp > m.time_stamp and m2.chat_id = ct2.chat_id)));")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         resp = []
@@ -118,7 +118,7 @@ class ChatTRepositoryImpl:
             response = db.query(f"select count(*) from chats_t;")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         return int(response[0][0])
@@ -133,7 +133,7 @@ class ChatTRepositoryImpl:
             response = db.query(f"select {ChatTRepositoryImpl.schemeNoBrackets} from chats_t ct where ct.chat_id = {chatId};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         resp = []
@@ -151,7 +151,7 @@ class ChatTRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -164,7 +164,7 @@ class ChatTRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -177,6 +177,6 @@ class ChatTRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 

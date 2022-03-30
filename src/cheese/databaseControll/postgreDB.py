@@ -38,7 +38,6 @@ class PostgreDB:
             self.rollback()
             return None
         ret = self.cursor.fetchall()
-        self.cursor.close()
         return ret
 
     # insert, update ...
@@ -49,7 +48,6 @@ class PostgreDB:
                 self.cursor.execute(sql)
             except:
                 self.rollback()
-            self.cursor.close()
         else:
             Logger.fail("Commiting is not allowed")
 

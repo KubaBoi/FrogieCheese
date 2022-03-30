@@ -39,7 +39,6 @@ class SQLServerDB:
             self.rollback()
             return None
         ret = self.cursor.fetchall()
-        self.cursor.close()
         return ret
 
     # insert, update ...
@@ -51,7 +50,6 @@ class SQLServerDB:
             except Exception as e:
                 Logger.fail(str(e))
                 self.rollback()
-            self.cursor.close()
         else:
             Logger.fail("Commiting is not allowed")
 

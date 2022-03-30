@@ -67,7 +67,7 @@ class MessageRepositoryImpl:
             response = db.query(f"select distinct m.id, author_id, content, m.chat_id, m.time_stamp from messages m inner join chats c on c.id = m.chat_id inner join chats_t ct on ct.chat_id = c.id inner join users u on u.id = ct.user_id where c.id = {chatId} and m.time_stamp <= {timeStamp} order by m.time_stamp desc limit {messagesCount};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         resp = []
@@ -84,7 +84,7 @@ class MessageRepositoryImpl:
             response = db.query(f"select count(*) from messages;")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         return int(response[0][0])
@@ -99,7 +99,7 @@ class MessageRepositoryImpl:
             response = db.query(f"select {MessageRepositoryImpl.schemeNoBrackets} from messages m where m.id = {messageId};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (len(response) > 0):
@@ -116,7 +116,7 @@ class MessageRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -129,7 +129,7 @@ class MessageRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -142,6 +142,6 @@ class MessageRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 

@@ -101,9 +101,9 @@ class Logger:
         else: header = ""
         logging.file(header + message)
         message = Logger.__infoPrint(message, header)
-        logging.html_file(message)
         if (Settings.allowDebug or not silence):
             logging.console(message)
+            logging.html_file(message)
 
     @staticmethod
     def okBlue(message, allowHeader=True, silence=True):
@@ -111,9 +111,9 @@ class Logger:
         else: header = ""
         logging.file(header + message)
         message = Logger.__okBluePrint(message, header)
-        logging.html_file(message)
         if (Settings.allowDebug or not silence):
             logging.console(message)
+            logging.html_file(message)
 
     @staticmethod
     def okCyan(message, allowHeader=True, silence=True):
@@ -121,9 +121,9 @@ class Logger:
         else: header = ""
         logging.file(header + message)
         message = Logger.__okCyanPrint(message, header)
-        logging.html_file(message)
         if (Settings.allowDebug or not silence):
             logging.console(message)
+            logging.html_file(message)
 
     @staticmethod
     def okGreen(message, allowHeader=True, silence=True):
@@ -131,9 +131,9 @@ class Logger:
         else: header = ""
         logging.file(header + message)
         message = Logger.__okGreenPrint(message, header)
-        logging.html_file(message)
         if (Settings.allowDebug or not silence):
             logging.console(message)
+            logging.html_file(message)
 
     @staticmethod
     def warning(message, allowHeader=True, silence=True):
@@ -141,9 +141,9 @@ class Logger:
         else: header = ""
         logging.file(header + message)
         message = Logger.__warningPrint(message, header)
-        logging.html_file(message)
         if (Settings.allowDebug or not silence):
             logging.console(message)
+            logging.html_file(message)
 
     @staticmethod
     def fail(message, e, allowHeader=True, silence=True):
@@ -162,9 +162,9 @@ class Logger:
         else: header = ""
         logging.file(header + message)
         message = Logger.__boldPrint(message, header)
-        logging.html_file(message)
         if (Settings.allowDebug or not silence):
             logging.console(message)
+            logging.html_file(message)
 
     @staticmethod
     def underline(message, allowHeader=True, silence=True):
@@ -172,9 +172,9 @@ class Logger:
         else: header = ""
         logging.file(header + message)
         message = Logger.__underlinePrint(message, header)
-        logging.html_file(message)
         if (Settings.allowDebug or not silence):
             logging.console(message)
+            logging.html_file(message)
 
     @staticmethod
     def listLogs():

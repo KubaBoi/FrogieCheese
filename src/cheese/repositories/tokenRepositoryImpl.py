@@ -67,7 +67,7 @@ class TokenRepositoryImpl:
             response = db.query(f"select {TokenRepositoryImpl.schemeNoBrackets} from tokens t where t.user_id = {userId} and t.ip = {ip} and t.end_time >= {time};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (len(response) > 0):
@@ -86,7 +86,7 @@ class TokenRepositoryImpl:
             response = db.query(f"select {TokenRepositoryImpl.schemeNoBrackets} from tokens t where t.token = {token} and t.ip = {ip} and t.end_time >= {time};")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (len(response) > 0):
@@ -103,7 +103,7 @@ class TokenRepositoryImpl:
             response = db.query(f"select case when exists (select * from tokens t where t.token = {token}) then cast(0 as bit) else cast(1 as bit) end;")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (response[0][0] == "1"): return True
@@ -121,7 +121,7 @@ class TokenRepositoryImpl:
             response = db.query(f"select case when exists (select * from tokens t where t.token = {token} and t.ip = {ip} and t.end_time >= {time}) then cast(1 as bit) else cast(0 as bit) end;")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (response[0][0] == "1"): return True
@@ -136,7 +136,7 @@ class TokenRepositoryImpl:
             response = db.query(f"select count(*) from tokens;")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         return int(response[0][0])
@@ -151,7 +151,7 @@ class TokenRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -164,7 +164,7 @@ class TokenRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -177,6 +177,6 @@ class TokenRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 

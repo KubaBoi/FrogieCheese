@@ -63,7 +63,7 @@ class PasswordRepositoryImpl:
             response = db.query(f"select case when exists (select * from passwords p where p.user_id = {userId}) then cast(1 as bit) else cast(0 as bit) end;")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         if (response[0][0] == "1"): return True
@@ -78,7 +78,7 @@ class PasswordRepositoryImpl:
             response = db.query(f"select count(*) from passwords;")
             db.done()
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
         return int(response[0][0])
@@ -93,7 +93,7 @@ class PasswordRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -106,7 +106,7 @@ class PasswordRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 
     @staticmethod
@@ -119,6 +119,6 @@ class PasswordRepositoryImpl:
             db.done()
             return True
         except Exception as e:
-            Logger.fail(str(e))
+            Logger.fail("An error occurred while commit request", str(e))
             return False
 

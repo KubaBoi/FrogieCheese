@@ -82,7 +82,7 @@ class CheeseController:
         cookieRaw = ""
         for header in server.headers._headers:
             if (header[0] == "Cookie"):
-                cookieRaw = ":".join(header)
+                cookieRaw = ":".join(header[1:])
 
         cookieRaw = list(cookieRaw)
         for i in range(len(cookieRaw)):
