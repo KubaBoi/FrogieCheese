@@ -204,6 +204,22 @@ class CheeseRepository:
 
 
     @staticmethod
+    def findNewId(args):
+        userRepository = CheeseRepository.findUserRepository()
+
+        if (userRepository == "chatRepository"):
+            return ChatRepositoryImpl.findNewId(args)
+        elif (userRepository == "chatTRepository"):
+            return ChatTRepositoryImpl.findNewId(args)
+        elif (userRepository == "messageRepository"):
+            return MessageRepositoryImpl.findNewId(args)
+        elif (userRepository == "passwordRepository"):
+            return PasswordRepositoryImpl.findNewId(args)
+        elif (userRepository == "tokenRepository"):
+            return TokenRepositoryImpl.findNewId(args)
+        elif (userRepository == "userRepository"):
+            return UserRepositoryImpl.findNewId(args)
+    @staticmethod
     def save(args):
         userRepository = CheeseRepository.findUserRepository()
 
@@ -277,14 +293,18 @@ class CheeseRepository:
     def getTypeOf(args):
         newArgs = []
         for arg in args:
-            if (type(arg) is str and arg[-1] != "\'" 
-                and arg[-1] != ")" 
-                and not arg.endswith("DESC") 
-                and not arg.endswith("ASC")):
-                if (arg.startswith("columnName-")):
-                    newArgs.append(arg.replace("columnName-", ""))
+            if (type(arg) is str):
+                if (len(arg) == 0): newArgs.append("")
+                elif (arg[-1] != "\'" 
+                    and arg[-1] != ")" 
+                    and not arg.endswith("DESC") 
+                    and not arg.endswith("ASC")):
+                    if (arg.startswith("columnName-")):
+                        newArgs.append(arg.replace("columnName-", ""))
+                    else:
+                        newArgs.append(f"\'{arg}\'")
                 else:
-                    newArgs.append(f"\'{arg}\'")
+                    newArgs.append(str(arg))
             elif (type(arg) is list):
                 newArgs.append("(" + ",".join(CheeseRepository.getTypeOf(arg)) + ")")
             else:

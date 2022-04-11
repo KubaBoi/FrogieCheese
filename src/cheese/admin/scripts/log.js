@@ -33,7 +33,7 @@ async function buildLogTable() {
             "<button onclick=\"location='/admin/activeLog.html'\">Full log</button>";
         }
         else {
-            label.innerHTML = "Cheese log - " + response.RESPONSE.LOG_DESC + " - ACTIVE";
+            label.innerHTML = "Cheese log - " + response.RESPONSE.LOG_DESC + " - <label class='okGreen'>ACTIVE</label>";
         }
     }
 }

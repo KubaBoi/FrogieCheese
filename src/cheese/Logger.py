@@ -185,17 +185,32 @@ class Logger:
             table = "<tr><th>Log name</th><th>Redirect</th><th>Status</th><th>Last logged</th><th>Size</th>"
             i = 0
             for name in reversed(sorted(files)):
+                status = ""
                 i += 1
                 if (not name.endswith(".html")): continue
                 table += f"<tr><td>{name}</td>"
                 if (i == 1):
                     table += f"<td><button onclick=\"location='/admin/logs/{name}'\">Connect to active console</button></td>"
-                    table += f"<td class='okGreen'>ACTIVE</td>"
+                    status = f"<td class='okGreen'>ACTIVE</td>"
                 else:
                     table += f"<td><button onclick=\"location='/admin/logs/{name}'\">Show log</button></td>"
-                    table += f"<td class='fail'>CLOSED</td>"
+                    status = f"<td class='fail'>CLOSED</td>"
+                
                 with open(f"{ResMan.logs()}/{name}", "r") as log:
-                    lastLogged = log.readlines()[-1].split("</td>")[0].replace("<tr><td>", "")
+                    logs = log.readlines()
+                    if (len(logs) > 0): 
+                        for i in range(1, len(logs)):
+                            if (logs[-i].startswith("<tr>")):
+                                lastLogged = logs[-i].split("</td>")[0].replace("<tr><td>", "")
+                    else:
+                        dt = datetime.fromtimestamp(os.stat(f"{ResMan.logs()}/{name}").st_mtime)
+                        lastLogged = dt.strftime("%Y-%m-%d %H:%M:%S")
+                        if (i == 1):
+                            status = f"<td class='okGreen'>ACTIVE/EMPTY</td>"
+                        else:
+                            status = f"<td class='warning'>EMPTY</td>"
+
+                table += status
                 table += f"<td>{lastLogged}</td>"
                 table += f"<td>{ResMan.convertBytes(os.path.getsize(ResMan.logs() + '/' + name))}</td>"
                 if (i != 1):
@@ -219,16 +234,17 @@ class Logger:
                 return (f.read(), 404)
 
         with open(f"{ResMan.cheese()}/admin/activeLog.html", "r") as temp:
-            logName = ResMan.getFileName(log)
+            logName = ResMan.getFileName(log).replace(".html", "")
             for root, dirs, files in os.walk(ResMan.logs()):
-                if (sorted(files)[-1] == logName):
+                if (sorted(files)[-1] == logName + ".html"):
                     data = temp.read()
                 else:
                     with open(f"{log}", "r") as f:
                         data = temp.read()
                         data = data.replace('class="logTable">', 'class="logTable">' + f.read())
-                        data = data.replace("Cheese log - ", "Cheese log - " + logName.replace(".html", ""))
-                        data = data.replace("//dontRunScript", "dontRunScript");
+                        data = data.replace("Cheese log - ", "Cheese log - " + 
+                            logName + " - <label class='fail'>CLOSED</label>")
+                        data = data.replace("//dontRunScript", "dontRunScript")
         return (bytes(data, "utf-8"), 200)
                 
 

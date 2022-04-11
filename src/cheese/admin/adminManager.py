@@ -46,6 +46,9 @@ class AdminManager:
         elif (server.path == "/admin/changeConfiguration"):
             AdminManager.__changeConfig(server)
             return
+        elif (server.path == "/admin/update"):
+            AdminManager.__update(server)
+            return
         AdminManager.__sendFile(server, server.path)        
         
 
@@ -115,7 +118,7 @@ class AdminManager:
             min = 0
             if (len(lines) >= 1000): min = len(lines) - 1000
             onlyTable = "".join(lines[min:(min+1000)])
-        response = CheeseController.createResponse({"RESPONSE": {"LOG_DESC": activeLog, "LOG": onlyTable}}, 200)
+        response = CheeseController.createResponse({"RESPONSE": {"LOG_DESC": activeLog.replace(".html", ""), "LOG": onlyTable}}, 200)
         CheeseController.sendResponse(server, response, "text/html")
 
     @staticmethod
@@ -125,7 +128,7 @@ class AdminManager:
 
     @staticmethod
     def __restartServer(server):
-        Logger.warning(20*"=")
+        Logger.warning(20*"=", silence=False)
         Logger.warning("REQUEST FOR SERVER RESTART SUCCESSFULLY RECIEVED", silence=False)
         Logger.warning("Restart will start in 5 seconds", silence=False)
         time.sleep(5)
@@ -139,9 +142,9 @@ class AdminManager:
 
     @staticmethod
     def __shutDown(server):
-        Logger.warning(20*"=")
-        Logger.warning("REQUEST FOR SERVER SHUT DOWN SUCCESSFULLY RECIEVED", header=False, silence=False)
-        Logger.warning("Shut down will start in 5 seconds", header=False, silence=False)
+        Logger.warning(20*"=", allowHeader=False, silence=False)
+        Logger.warning("REQUEST FOR SERVER SHUT DOWN SUCCESSFULLY RECIEVED", allowHeader=False, silence=False)
+        Logger.warning("Shut down will start in 5 seconds", allowHeader=False, silence=False)
         time.sleep(5)
         server.server.socket.close()
 
@@ -149,3 +152,11 @@ class AdminManager:
     def __changeConfig(server):
         pass
         
+    @staticmethod
+    def __update(server):
+        Logger.warning(20*"=", allowHeader=False, silence=False)
+        Logger.warning("Updating from git", allowHeader=False, silence=False)
+        subprocess.call("git pull")
+        Logger.warning("Project has been updated. Restart for apply changes.")
+        response = CheeseController.createResponse({"RESPONSE": "OK"}, 200)
+        CheeseController.sendResponse(server, response)

@@ -1,0 +1,68 @@
+<html lang="cs">
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://frogie.cz:8002/style.css">
+    <link rel="stylesheet" href="http://frogie.cz:8002/prism.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <title>API</title>
+</head>
+<body>
+    <script src="http://frogie.cz:8002/prism.js"></script>
+
+    <div id="toc_container">
+        <p class="toc_title">Contents</p>
+        <ol>
+            <li>
+                <a href="#1">/endpoint1</a>
+                <ol>
+                    <li><a href="#1.1">/endpoint11</a></li>
+                </ol>
+            </li>
+        </ol>
+    </div>
+
+    <ol class="num">
+        <li class="num">
+            <span class="hd2" id="1">/endpoint1</span>
+            <ol class="num">
+                <li class="num">
+                    <span class="hd3" id="1.1">/endpoint11 - GET</span>
+                    <figure>
+                        <figcaption>Accepts:</figcaption>
+                        <pre><code class="language-json">
+{
+    "ACCEPT": "json"
+}
+                        </code></pre></figure>
+                    <figure>
+                        <figcaption>Return OK - 200:</figcaption>
+                        <pre><code class="language-json">
+{
+    "RETURN": "json"
+}
+                            </code></pre></figure>
+                    <figure>
+                        <figcaption>Return Bad request - 400:</figcaption>
+                        <pre><code class="language-json">
+{
+    "ERROR": "Wrong json structure"
+}
+                            </code></pre></figure>
+                    <figure>
+                        <figcaption>Return Unauthorized - 401:</figcaption>
+                        <pre><code class="language-json">
+{
+    "ERROR": "Unauthorized"
+}
+                            </code></pre></figure>
+                </li>
+            </ol>
+        </li>
+        
+    </ol>
+
+
+
+</body>
+</html>

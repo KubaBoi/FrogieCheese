@@ -134,7 +134,8 @@ class UserRepositoryImpl:
             Logger.fail("An error occurred while query request", str(e))
 
         if (response == None): return response
-        return int(response[0][0])
+        try: return int(response[0][0])
+        except: return -1
 
     @staticmethod
     def findUserByIpAndToken(args):
@@ -171,6 +172,18 @@ class UserRepositoryImpl:
         for a in response:
             resp.append(UserRepositoryImpl.toModel(a))
         return resp
+
+    @staticmethod
+    def findNewId(args):
+
+        try:
+            db = Database()
+            db.commit(f"select max(id) from {UserRepositoryImpl.table};")
+            db.done()
+            return True
+        except Exception as e:
+            Logger.fail("An error occurred while commit request", str(e))
+            return False
 
     @staticmethod
     def save(args):

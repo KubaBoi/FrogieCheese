@@ -17,11 +17,11 @@ class SQLServerDB:
     # connect to database
     def connect(self):
         self.connection = pyodbc.connect(f"Driver={Settings.dbDriver};"
-                      f"Server={Settings.dbHost},{Settings.dbPort};"
-                      f"Database={Settings.dbName};"
-                      f"UID={Settings.dbUser};"
-                      f"PWD={Settings.dbPassword};"
-                      f"Trusted_Connection=yes;")
+                    f"Server={Settings.dbHost},{Settings.dbPort};"
+                    f"Database={Settings.dbName};"
+                    f"UID={Settings.dbUser};"
+                    f"PWD={Settings.dbPassword};"
+                    f"Trusted_Connection=yes;")
 
         self.cursor = self.connection.cursor()
 

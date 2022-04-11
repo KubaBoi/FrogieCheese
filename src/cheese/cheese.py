@@ -73,7 +73,7 @@ class Cheese:
         except OSError:
             Logger.warning("SHUTING SERVER DOWN")
         except Exception as e:
-            Logger.fail("UNKNOWN ERROR WHILE RUNNING SERVER", e)
+            Logger.fail("UNKNOWN ERROR WHILE RUNNING SERVER ", e)
         Logger.info(f"Server Stops - {Settings.host}:{Settings.port}", silence=False)
         sys.exit()
 
@@ -82,4 +82,9 @@ class Cheese:
     def printInit():
         with open(f"{ResMan.cheese()}/initString.txt", "r") as f:
             print(f.read())
+        with open(f"{ResMan.cheese()}/cheeseproperties.json", "r") as f:
+            properties = json.loads(f.read())
+            print(f"Cheese Framework            (v{properties['release']})")
+            print(properties['documentation'])
+            print("")
 
