@@ -27,7 +27,10 @@ function addSetting(setting, value) {
     var valueColumn = document.createElement("td");
 
     nameColumn.innerHTML = setting;
-    valueColumn.innerHTML = "<input type='text' value='" + value + "'>";
+    if (setting == "dbPassword")
+        valueColumn.innerHTML = "<input type='password' value='" + value + "'>";
+    else
+        valueColumn.innerHTML = "<input type='text' value='" + value + "'>";
     
     row.appendChild(nameColumn);
     row.appendChild(valueColumn);

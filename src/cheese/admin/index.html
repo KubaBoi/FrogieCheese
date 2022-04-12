@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>CHAdmin</h1>
+    <label id="release"></label>
     <div id="control" class="controlDiv">
         <button onclick="restart()" id="restartButt">Restart server</button>
         <button onclick="saveChanges()" id="saveButt">Save configuration</button>
@@ -24,9 +25,11 @@
     <script src="admin/scripts/settings.js"></script>
     <script src="admin/scripts/log.js"></script>
     <script src="admin/scripts/controll.js"></script>
+    <script src="admin/scripts/release.js"></script>
     <script>
         buildSettingTable();
         buildLogTable();
+        setRelease();
     </script>
 </body>
 </html>

@@ -49,6 +49,9 @@ class AdminManager:
         elif (server.path == "/admin/update"):
             AdminManager.__update(server)
             return
+        elif (server.path == "/admin/cheeseRelease"):
+            AdminManager.__getRelease(server)
+            return
         AdminManager.__sendFile(server, server.path)        
         
 
@@ -156,7 +159,15 @@ class AdminManager:
     def __update(server):
         Logger.warning(20*"=", allowHeader=False, silence=False)
         Logger.warning("Updating from git", allowHeader=False, silence=False)
-        subprocess.call("git pull")
-        Logger.warning("Project has been updated. Restart for apply changes.")
+        subprocess.call(f"cd {ResMan.root()}; git pull", shell=True)
+        Logger.warning("Project has been updated. Restart to apply changes.", allowHeader=False, silence=False)
         response = CheeseController.createResponse({"RESPONSE": "OK"}, 200)
+        CheeseController.sendResponse(server, response)
+
+    @staticmethod
+    def __getRelease(server):
+        with open(os.path.join(ResMan.cheese(), "cheeseproperties.json"), "r") as f:
+            release = json.loads(f.read())["release"]
+
+        response = CheeseController.createResponse({"RELEASE": release}, 200)
         CheeseController.sendResponse(server, response)

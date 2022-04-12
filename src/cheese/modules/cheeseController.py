@@ -26,7 +26,7 @@ class CheeseController:
     # return response
     @staticmethod
     def createResponse(dict, code):
-        return (bytes(json.dumps(dict), "utf-8"), code)
+        return (bytes(json.dumps(dict, indent=4, sort_keys=True, default=str), "utf-8"), code)
 
     # return json array from array of modules
     @staticmethod
@@ -115,21 +115,25 @@ class CheeseController:
     @staticmethod
     def serveFile(server, file, header="text/html"):
         file = unquote(file)
-        file = ResMan.joinPath(ResMan.web(), file)
+        if (file[0] == "/"):
+            file = os.path.join(ResMan.web(), file[1:])
+        else:
+            file = os.path.join(ResMan.web(), file)
 
         Logger.info(f"Serving file: {file}")
         
         if (not os.path.exists(f"{file}")):
-            with open(f"{ResMan.error()}/error404.html", "rb") as f:
+            with open(os.path.join(ResMan.error(), "error404.html"), "rb") as f:
                 CheeseController.sendResponse(server, (f.read(), 404))
             return
 
         if (file.endswith(".html")):
             with open(f"{file}", "r", encoding="utf-8") as f:
                 data = f.read()
-                data = (data.split("</body>")[0] + "<label style='position: fixed;right: 5px;bottom: 5px; font-family: Arial, Helvetica, sans-serif;'>"
-                + "Powered By <a href='https://kubaboi.github.io/CheeseFramework/'"
-                + "style='color: var(--text-color);' target='_blank'>Cheese Framework</a> </label></body>" + data.split("</body>")[1])
+                if (data.find("</body>") != -1):
+                    data = (data.split("</body>")[0] + "<label style='position: fixed;right: 5px;bottom: 5px; font-family: Arial, Helvetica, sans-serif;'>"
+                    + "Powered By <a href='https://kubaboi.github.io/CheeseFramework/'"
+                    + "style='color: var(--text-color);' target='_blank'>Cheese Framework</a> </label></body>" + data.split("</body>")[1])
                 CheeseController.sendResponse(server, (bytes(data, "utf-8"), 200), header)
         else:
             with open(f"{file}", "rb") as f:
