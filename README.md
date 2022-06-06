@@ -63,7 +63,7 @@ sudo nano /etc/rc.local:
 sudo chmod a+x /etc/rc.local
 ```
 
-#cloud
+# cloud
 
 ```
 ssh root@94.176.182.223
