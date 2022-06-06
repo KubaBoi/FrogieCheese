@@ -1,4 +1,5 @@
-#postgres
+# postgres
+
 sudo apt-get install wget ca-certificates
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ 'lsb_release -cs'-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
@@ -14,7 +15,7 @@ CREATE DATABASE frogie_database;
 sudo -u postgres psql frogie_database
 copy paste setDatabase.sql
 
-#build
+# build
  - v pom musi byt <packaging>war<packaging>
 pred buildem je potreba pridat do hlavni tridy:
     import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -36,7 +37,7 @@ mvn package
 	- nic
 	- /home/Frogie/target/<version>.war
 
-#tomcat (https://linuxhint.com/install_apache_tomcat_server_ubuntu/)
+# tomcat (https://linuxhint.com/install_apache_tomcat_server_ubuntu/)
 sudo apt-cache search tomcat
 sudo apt install tomcat9 tomcat9-admin
 ss -ltn
@@ -49,8 +50,10 @@ sudo systemctl restart tomcat9
 <ip>:8080/manager/html
 Deploy menu - XML Configuration file path zustane prazdne
 sudo nano /etc/rc.local:
+```
 	#!/bin/bash
 	sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+```
 sudo chmod a+x /etc/rc.local
 
 #cloud
