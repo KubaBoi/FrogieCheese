@@ -71,6 +71,6 @@ sudo apt install libpq-dev python3-dev
 pip install psycopg2-binary
 pip install psycopg2
 sudo crontab -e
-```
 @reboot python3 /home/Cloudos/server.py &
 sudo ufw allow from any to any port 8000 proto tcp
+```
